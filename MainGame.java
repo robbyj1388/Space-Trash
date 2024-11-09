@@ -86,15 +86,15 @@ public class MainGame extends Application {
     }
 
     /**
-	 * The main( ) method is ignored in JavaFX applications.
-	 * main( ) serves only as fallback in case the application is launched
-	 * as a regular Java application, e.g., in IDEs with limited FX
-	 * support.
-	 *
-	 * @param args the command line arguments
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
+     * The main( ) method is ignored in JavaFX applications.
+     * main( ) serves only as fallback in case the application is launched
+     * as a regular Java application, e.g., in IDEs with limited FX
+     * support.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
 
