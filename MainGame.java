@@ -86,53 +86,15 @@ public class MainGame extends Application {
     }
 
     /**
-     * The main( ) method is ignored in JavaFX applications.
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+	 * The main( ) method is ignored in JavaFX applications.
+	 * main( ) serves only as fallback in case the application is launched
+	 * as a regular Java application, e.g., in IDEs with limited FX
+	 * support.
+	 *
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
 
-class Meteor {
-    int velocity; // Speed at which the meteor falls
-    javafx.scene.shape.Shape shape;
-
-    // Constructor to initialize a meteor with velocity and color
-    public Meteor(int velocity, javafx.scene.paint.Paint color) {
-        this.velocity = velocity;
-
-        // Randomly choose a shape for the meteor (Circle, Rectangle, Polygon)
-        int shapeType = new Random().nextInt(3);
-        switch (shapeType) {
-            case 0: // Circle
-                shape = new javafx.scene.shape.Circle(50, color);
-                break;
-            case 1: // Rectangle
-                shape = new javafx.scene.shape.Rectangle(50,
-                    50, color);
-                break;
-            case 2: // Polygon (Triangle)
-                shape = new javafx.scene.shape.Polygon(
-                    0.0, 0.0, 
-                    50.0, 0.0, 
-                    25.0, 50.0);
-                shape.setFill(color);
-                break;
-            default:
-                shape = new javafx.scene.shape.Circle(50, color); 
-                break;
-        }
-
-        // Set initial position
-        shape.setLayoutX(0);
-        shape.setLayoutY(0);
-    }
-
-    /**
-     * Inverts and doubles the velocity of the meteor (deflects it).
-     */
-    public void deflect() {
-        velocity *= -2; // Invert and double the velocity
-        System.out.println("Meteor deflected! New velocity: " + velocity);
-    }
-}
