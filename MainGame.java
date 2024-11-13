@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -117,18 +116,6 @@ public class MainGame extends Application {
         }
     }
 
-    /**
-     * Deflect the active meteor when the button is pressed.
-     */
-    private void deflectMeteor() {
-        for (Meteor meteor : meteors) {
-            if (meteor.shape.getBoundsInParent().intersects(player.leftPaddle.getBoundsInParent())
-                    || meteor.shape.getBoundsInParent().intersects(player.rightPaddle.getBoundsInParent())) {
-                meteor.deflect(); // Deflect any meteor that is currently colliding
-                break; // Only deflect one at a time for the button action
-            }
-        }
-    }
 
     public static void main(String[] args) {
         launch(args);
