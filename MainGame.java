@@ -6,6 +6,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BackgroundPosition;
+
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,14 +31,34 @@ public class MainGame extends Application {
      * @param stage
      */
     public void start(Stage stage) {
+
+        // Set up background image.
+        Background background = null;
+        try {
+            FileInputStream input = new FileInputStream("backgroundImg.png");
+            Image image = new Image(input);
+            // Set the background image to stretch to fill the window
+            BackgroundImage backgroundImage = new BackgroundImage(image,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.DEFAULT,
+                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, false));
+
+            background = new Background(backgroundImage);
+
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
         root = new Pane();
         Scene scene = new Scene(root, 960, 540);
 
         stage.setTitle("Space Trash");
         stage.setScene(scene);
+        root.setBackground(background);
         stage.show();
 
-        // Spawn player paddles and set their initial position relative to window size
+        // Spawn player paddles and set their position relative to window size
         spawnPlayer(scene.getWidth() * 0.3, scene.getHeight() * 0.75, 50.0);
 
         // Set up a Timeline to spawn meteors at intervals
@@ -115,7 +143,6 @@ public class MainGame extends Application {
             }
         }
     }
-
 
     public static void main(String[] args) {
         launch(args);
