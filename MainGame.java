@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.Random;
 
 public class MainGame extends Application {
-
     private Pane root;
     private Random random = new Random();
-    private Player player = null;
-    private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors
+    private Paddle leftPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
+    private Paddle rightPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
+    private int distanceBetweenPaddles = 300; // For spawning,
+    private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors,
+    public static int score = 0; // Keep score for each meteor hit.
 
     /**
      * The start method. Required by Application.
@@ -89,14 +91,12 @@ public class MainGame extends Application {
      * @param size the size of the paddles
      */
     private void spawnPlayer(double x, double y, double size) {
-        player = new Player(size / 4, size);
+        leftPaddle.setLayoutX(x);
+        leftPaddle.setLayoutY(y);
+        rightPaddle.setLayoutX(x + distanceBetweenPaddles);
+        rightPaddle.setLayoutY(y);
 
-        player.leftPaddle.setLayoutX(x);
-        player.leftPaddle.setLayoutY(y);
-        player.rightPaddle.setLayoutX(x + player.distance);
-        player.rightPaddle.setLayoutY(y);
-
-        root.getChildren().addAll(player.leftPaddle, player.rightPaddle);
+        root.getChildren().addAll(leftPaddle, rightPaddle);
     }
 
     /**
@@ -108,10 +108,10 @@ public class MainGame extends Application {
         double x = scene.getWidth() * 0.3;
         double y = scene.getHeight() * 0.75;
 
-        player.leftPaddle.setLayoutX(x);
-        player.leftPaddle.setLayoutY(y);
-        player.rightPaddle.setLayoutX(x + player.distance);
-        player.rightPaddle.setLayoutY(y);
+        leftPaddle.setLayoutX(x);
+        leftPaddle.setLayoutY(y);
+        rightPaddle.setLayoutX(x + distanceBetweenPaddles);
+        rightPaddle.setLayoutY(y);
     }
 
     /**
@@ -129,11 +129,10 @@ public class MainGame extends Application {
         meteor.shape.setLayoutY(-meteor.shape.getBoundsInLocal().getHeight());
         root.getChildren().add(meteor.shape);
 
-        player.leftPaddle.toFront();
-        player.rightPaddle.toFront();
+        leftPaddle.toFront();
+        rightPaddle.toFront();
 
-        meteors.add(meteor); // Add meteor to the list
-
+        meteors.add(meteor); // Add meteor to th
         meteor.shape.layoutYProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue.doubleValue() > root.getHeight()) {
@@ -148,8 +147,8 @@ public class MainGame extends Application {
      */
     private void checkCollisions() {
         for (Meteor meteor : meteors) {
-            if (meteor.shape.getBoundsInParent().intersects(player.leftPaddle.getBoundsInParent())
-                    || meteor.shape.getBoundsInParent().intersects(player.rightPaddle.getBoundsInParent())) {
+            if (meteor.shape.getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
+                    || meteor.shape.getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
                 meteor.deflect(); // Deflect the meteor upon collision
             }
         }
