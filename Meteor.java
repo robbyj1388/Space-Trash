@@ -96,7 +96,6 @@ public class Meteor{
      */
     public void deflect() {
         velocity *= -2; // Invert and double the velocity
-        System.out.println("Meteor deflected!");
     }
     
     /**
