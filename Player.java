@@ -1,10 +1,12 @@
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Player {
+    static Color paddleColor = Color.WHITE;  
     int x = 0;
     int y = 0;
-    double distance = 200.0; // between paddles
-    int velocity;
+    double distance = 200.0; // Distance between paddles
+    int velocity = 5; // Default velocity for movement
     Rectangle leftPaddle = null;
     Rectangle rightPaddle = null;
     Double height;
@@ -20,9 +22,39 @@ public class Player {
         this.height = height;
         this.width = width;
 
+        // Create the paddles
         leftPaddle = new Rectangle(x, y, this.width, this.height);
         rightPaddle = new Rectangle(x + distance, y, this.width, this.height);
 
+        // Set paddle color
+        leftPaddle.setFill(paddleColor);
+        rightPaddle.setFill(paddleColor);
+    }
+
+    /**
+     * Move player up by velocity
+     */
+    public void moveUp() {
+        y -= velocity;
+        updatePaddlePositions();
+    }
+
+    /**
+     * Move player down by velocity
+     */
+    public void moveDown() {
+        y += velocity;
+        updatePaddlePositions();
+    }
+
+    /**
+     * Update both paddles' Y positions based on the player’s y position
+     */
+    private void updatePaddlePositions() {
+        leftPaddle.setY(y);
+        rightPaddle.setY(y); // Keep right paddle aligned to the left paddle
+        leftPaddle.setX(x);
+        rightPaddle.setX(x);
     }
 
     /**
@@ -61,8 +93,7 @@ public class Player {
      */
     public void setY(int y) {
         this.y = y;
-        leftPaddle.setY(y);
-        rightPaddle.setY(y + distance);
+        updatePaddlePositions();
     }
 
     /**
