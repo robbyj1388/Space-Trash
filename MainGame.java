@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
@@ -8,9 +9,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Random;
 
@@ -21,10 +25,14 @@ public class MainGame extends Application {
     private Paddle rightPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
     private int distanceBetweenPaddles = 300; // For spawning,
     private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors,
+    private Set<KeyCode> pressedKeys = new HashSet<>(); // Track player pressed down keys
+
     public static int score = 0; // Keep score for each meteor hit.
 
     /**
      * The start method. Required by Application.
+     * 
+     * Contains Main player movement
      *
      * @param stage the primary stage for this application
      */
@@ -40,6 +48,44 @@ public class MainGame extends Application {
         // Spawn player paddles and set their position relative to window size
         spawnPlayer(scene.getWidth() * 0.3, scene.getHeight() * 0.75, 50.0);
 
+        // Track key presses
+        scene.setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
+        scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
+
+        // Game loop for smooth movement
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Left paddle movement.
+                if (pressedKeys.contains(KeyCode.W)) {
+                    leftPaddle.moveUp();
+                }
+                if (pressedKeys.contains(KeyCode.S)) {
+                    leftPaddle.moveDown(scene.getHeight());
+                }
+                if (pressedKeys.contains(KeyCode.A)) {
+                    leftPaddle.moveLeft();
+                }
+                if (pressedKeys.contains(KeyCode.D)) {
+                    leftPaddle.moveRight(scene.getWidth());
+                }
+                // Right paddle movement.
+                if (pressedKeys.contains(KeyCode.UP)) {
+                    rightPaddle.moveUp();
+                }
+                if (pressedKeys.contains(KeyCode.DOWN)) {
+                    rightPaddle.moveDown(scene.getHeight());
+                }
+                if (pressedKeys.contains(KeyCode.LEFT)) {
+                    rightPaddle.moveLeft();
+                }
+                if (pressedKeys.contains(KeyCode.RIGHT)) {
+                    rightPaddle.moveRight(scene.getWidth());
+                }
+            }
+        };
+        gameLoop.start();
+
         // Set up a Timeline to spawn meteors at intervals
         Timeline meteorSpawner = new Timeline(new KeyFrame(
                 Duration.seconds(1), e -> spawnMeteor(scene.getWidth())));
@@ -51,7 +97,7 @@ public class MainGame extends Application {
                 Duration.millis(20), e -> checkCollisions()));
         collisionChecker.setCycleCount(Timeline.INDEFINITE);
         collisionChecker.play();
-        
+
         // Listen for window resize events and reposition player paddles
         scene.widthProperty().addListener((obs, oldVal, newVal) -> updatePlayerPosition(scene));
         scene.heightProperty().addListener((obs, oldVal, newVal) -> updatePlayerPosition(scene));
@@ -75,7 +121,8 @@ public class MainGame extends Application {
 
             // Update the image dimensions on window resize
             root.widthProperty().addListener((obs, oldVal, newVal) -> backgroundView.setFitWidth(newVal.doubleValue()));
-            root.heightProperty().addListener((obs, oldVal, newVal) -> backgroundView.setFitHeight(newVal.doubleValue()));
+            root.heightProperty()
+                    .addListener((obs, oldVal, newVal) -> backgroundView.setFitHeight(newVal.doubleValue()));
 
             root.getChildren().add(0, backgroundView); // Add background to the root as the first child
         } catch (Exception e) {
@@ -93,7 +140,7 @@ public class MainGame extends Application {
     private void spawnPlayer(double x, double y, double size) {
         leftPaddle.setLayoutX(x);
         leftPaddle.setLayoutY(y);
-        rightPaddle.setLayoutX(x + distanceBetweenPaddles);
+        rightPaddle.setLayoutX(x + distanceBetweenPaddles); // spawn paddles with distance between them.
         rightPaddle.setLayoutY(y);
 
         root.getChildren().addAll(leftPaddle, rightPaddle);
