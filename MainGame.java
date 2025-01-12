@@ -5,6 +5,8 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
@@ -14,25 +16,26 @@ import javafx.scene.input.KeyCode;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class MainGame extends Application {
     private Pane root;
     private Random random = new Random();
     private Paddle leftPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
     private Paddle rightPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
-    private int distanceBetweenPaddles = 300; // For spawning,
-    private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors,
-    private Set<KeyCode> pressedKeys = new HashSet<>(); // Track player pressed down keys
+    private int distanceBetweenPaddles = 300; // For spawning
+    private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors
+    private Set<KeyCode> pressedKeys = new HashSet<>(); // Track player pressed keys
 
-    public static int score = 0; // Keep score for each meteor hit.
+    public static int score = 0; // Keep score for each meteor hit
+    private Text scoreText; // Display the score
 
     /**
      * The start method. Required by Application.
-     * 
-     * Contains Main player movement
+     *
+     * Contains main player movement.
      *
      * @param stage the primary stage for this application
      */
@@ -45,6 +48,14 @@ public class MainGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+        // Add score display
+        scoreText = new Text("Score: 0");
+        scoreText.setFill(Color.WHITE);
+        scoreText.setFont(Font.font(20));
+        scoreText.setX(10);
+        scoreText.setY(30);
+        root.getChildren().add(scoreText);
+
         // Spawn player paddles and set their position relative to window size
         spawnPlayer(scene.getWidth() * 0.3, scene.getHeight() * 0.75, 50.0);
 
@@ -56,7 +67,7 @@ public class MainGame extends Application {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                // Left paddle movement.
+                // Left paddle movement
                 if (pressedKeys.contains(KeyCode.W)) {
                     leftPaddle.moveUp();
                 }
@@ -69,7 +80,7 @@ public class MainGame extends Application {
                 if (pressedKeys.contains(KeyCode.D)) {
                     leftPaddle.moveRight(scene.getWidth());
                 }
-                // Right paddle movement.
+                // Right paddle movement
                 if (pressedKeys.contains(KeyCode.UP)) {
                     rightPaddle.moveUp();
                 }
@@ -167,36 +178,38 @@ public class MainGame extends Application {
      * @param sceneWidth the width of the scene
      */
     private void spawnMeteor(double sceneWidth) {
-        Color color = Color.rgb(255, 0, 0, 1);
-        int velocity = 2 + random.nextInt(4);
+        Color color = Color.rgb(255, 0, 0, 1); // Set meteor color
+        int velocity = 2 + random.nextInt(4); // Randomize meteor speed
 
-        Meteor meteor = new Meteor(velocity, color);
+        Meteor meteor = new Meteor(velocity, 0, color); // Create new meteor
 
-        meteor.shape.setLayoutX(random.nextDouble() * sceneWidth);
-        meteor.shape.setLayoutY(-meteor.shape.getBoundsInLocal().getHeight());
-        root.getChildren().add(meteor.shape);
+        // Set a random x position within the screen width and y position at the top
+        double randomX = random.nextDouble() * sceneWidth;
+        meteor.setPosition(randomX, -meteor.getShape().getBoundsInLocal().getHeight());
 
-        leftPaddle.toFront();
-        rightPaddle.toFront();
+        // Add the meteor to the scene
+        root.getChildren().add(meteor.getShape());
+        meteors.add(meteor);
 
-        meteors.add(meteor); // Add meteor to th
-        meteor.shape.layoutYProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (newValue.doubleValue() > root.getHeight()) {
-                        root.getChildren().remove(meteor.shape);
-                        meteors.remove(meteor); // Remove meteor from the list when out of view
-                    }
-                });
+        // Remove the meteor when it goes out of bounds
+        meteor.getShape().layoutYProperty().addListener((observable, oldValue, newValue) -> {
+            if ((newValue.doubleValue() < -100) || (newValue.doubleValue() > root.getHeight())) {
+                root.getChildren().remove(meteor.getShape());
+                meteors.remove(meteor);
+            }
+        });
     }
 
     /**
      * Checks for collisions between meteors and player paddles.
      */
     private void checkCollisions() {
-        for (Meteor meteor : meteors) {
+        for (Meteor meteor : new ArrayList<>(meteors)) { // Avoid ConcurrentModificationException
             if (meteor.shape.getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || meteor.shape.getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
                 meteor.deflect(); // Deflect the meteor upon collision
+                score++;
+                scoreText.setText("Score: " + score);
             }
         }
     }
