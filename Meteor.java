@@ -1,5 +1,4 @@
 import java.util.Random;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.paint.Paint;
@@ -9,51 +8,50 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
-public class Meteor{
-    int x = 0;
-    int y = 0;
-    int velocity; // Stores the speed at which the meteor falls.
-    Shape shape = null;
-    Double maxSize = 50.0;
-    Double minSize = 30.0;
-    Random rand = null;
-    Timeline timeline; // Animation to simulate gravity.
+public class Meteor {
+    private int x = 0; // Current x-coordinate of the meteor
+    private int y = 0; // Current y-coordinate of the meteor
+    private double dx = 0.0; // Horizontal velocity for diagonal movement
+    private int velocity = 0; // Vertical speed of the meteor
+    public Shape shape = null; // The shape representing the meteor
+    private final Double maxSize = 50.0; // Maximum size of the meteor
+    private final Double minSize = 30.0; // Minimum size of the meteor
+    private final Random randShape = new Random(); // Randomizer for shape selection
+    private final Random randSlope = new Random(); // Randomizer for movement
+    private Timeline timeline; // Animation timeline to simulate falling
 
     /**
-     * Constructor for picking a random shape for the meteor.
+     * Constructor for creating a meteor with random shape and size.
      * 
-     * @param velocity The speed of the meteor's fall.
-     * @param color The color of the meteor.
+     * @param velocity           The speed of the meteor's fall.
+     * @param horizontalVelocity The horizontal speed for diagonal movement.
+     * @param color              The color of the meteor.
      */
-    public Meteor(int velocity, Paint color) {
+    public Meteor(int velocity, int horizontalVelocity, Paint color) {
         this.velocity = velocity;
-        rand = new Random(); // make a new random value for each meteor.
-        // Makes a double withing the range of minSize to maxSize
-        Double size = minSize + (maxSize - minSize) * rand.nextDouble();
+        this.dx = horizontalVelocity;
 
-        // Pick 1 of 3 random shapes for meteor.
-        switch (rand.nextInt(3)) {
+        // Generate a random size within the specified range
+        Double size = minSize + (maxSize - minSize) * randShape.nextDouble();
+
+        // Randomly pick one of three shapes for the meteor
+        switch (randShape.nextInt(3)) {
             case 0:
                 Circle circle = new Circle(size, color);
                 shape = circle;
                 break;
             case 1:
-                Rectangle rectangle = new Rectangle(
-                    size, 
-                    size);
+                Rectangle rectangle = new Rectangle(size, size);
                 rectangle.setFill(color);
                 shape = rectangle;
                 break;
             case 2:
-                Polygon polygon = new Polygon(
-                    0.0, 0.0, 
-                    size, 0.0, 
-                    size, size);
+                Polygon polygon = new Polygon(0.0, 0.0, size, 0.0, size, size);
                 polygon.setFill(color);
                 shape = polygon;
                 break;
             default:
-                System.out.println("404 shape not found.");
+                System.out.println("Error: Shape not found.");
                 break;
         }
 
@@ -62,24 +60,37 @@ public class Meteor{
     }
 
     /**
+     * Sets the position of the meteor. 
+     * Used for setting the range of the positions they will fall onto the screen at.
+     * 
+     * @param x New x-coordinate
+     * @param y New y-coordinate
+     */
+    public void setPosition(double x, double y) {
+        this.x = (int) x;
+        this.y = (int) y;
+        shape.setLayoutX(x);
+        shape.setLayoutY(y);
+    }
+
+    /**
      * Starts the falling animation, simulating gravity.
      */
     private void startFalling() {
-        timeline = new Timeline(new KeyFrame(Duration.millis(16), 
-        e -> moveDown()));
-
-        timeline.setCycleCount(Timeline.INDEFINITE); // Repeat after 16ms;
+        timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> move()));
+        timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
         timeline.play();
     }
 
     /**
-     * Moves the meteor shape down by the velocity amount.
+     * Moves the meteor shape down by the velocity amount and adds horizontal movement.
      */
-    private void moveDown() {
-        y += velocity; // Increment the y-coordinate by the velocity.
+    private void move() {
+        y += velocity; // Increment the y-coordinate by the vertical velocity
+        x += randSlope.nextDouble() * 5; // Increment the x-coordinate by the horizontal velocity IS CAUSEING THE SHAKING EFFECT.
 
-        // Update the shape's position
-        shape.setLayoutY(y);
+        // Update the position of the meteor
+        setPosition(x, y);
     }
 
     /**
@@ -95,133 +106,55 @@ public class Meteor{
      * Handles deflect action to reverse and double the velocity.
      */
     public void deflect() {
-        velocity *= -2; // Invert and double the velocity
+        velocity = -velocity * 2; // Reverse the vertical velocity
+        dx = -dx; // Reverse the horizontal direction
     }
-    
-    /**
-     * Get x coordinate.
-     * 
-     * @return x
-     */
+
+    // Getters and Setters
     public int getX() {
         return x;
     }
 
-    /**
-     * Set x coordinate and update shape position.
-     * 
-     * @param x New x coordinate
-     */
     public void setX(int x) {
-        this.x = x;
-        shape.setLayoutX(x);
+        setPosition(x, y);
     }
 
-    /**
-     * Get y coordinate.
-     * 
-     * @return y
-     */
     public int getY() {
         return y;
     }
 
-    /**
-     * Set y coordinate and update shape position.
-     * 
-     * @param y New y coordinate
-     */
     public void setY(int y) {
-        this.y = y;
-        shape.setLayoutY(y);
+        setPosition(x, y);
     }
 
-    /**
-     * Get velocity of meteor.
-     * 
-     * @return velocity
-     */
     public int getVelocity() {
         return velocity;
     }
 
-    /**
-     * Set velocity of meteor.
-     * 
-     * @param velocity New velocity
-     */
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
 
-    /**
-     * Get shape of meteor.
-     * 
-     * @return shape
-     */
     public Shape getShape() {
         return shape;
     }
 
-    /**
-     * Set shape of meteor.
-     * 
-     * @param shape New shape
-     */
     public void setShape(Shape shape) {
         this.shape = shape;
     }
 
-    /**
-     * Get maximum size of meteor.
-     * 
-     * @return maxSize
-     */
     public Double getMaxSize() {
         return maxSize;
     }
 
-    /**
-     * Set maximum size of meteor.
-     * 
-     * @param maxSize New maximum size
-     */
-    public void setMaxSize(Double maxSize) {
-        this.maxSize = maxSize;
-    }
-
-    /**
-     * Get minimum size of meteor.
-     * 
-     * @return minSize
-     */
     public Double getMinSize() {
         return minSize;
     }
 
-    /**
-     * Set minimum size of meteor.
-     * 
-     * @param minSize New minimum size
-     */
-    public void setMinSize(Double minSize) {
-        this.minSize = minSize;
-    }
-
-    /**
-     * Get timeline for meteor's animation.
-     * 
-     * @return timeline
-     */
     public Timeline getTimeline() {
         return timeline;
     }
 
-    /**
-     * Set timeline for meteor's animation.
-     * 
-     * @param timeline New timeline
-     */
     public void setTimeline(Timeline timeline) {
         this.timeline = timeline;
     }
