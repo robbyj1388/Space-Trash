@@ -8,11 +8,8 @@ A simple game where meteors fall from the sky, and the player must deflect them 
 * Meteors spawn at regular intervals.
 
 # To-Do List
-* Make Player Paddles move based on arrow keys and wasd keys.
 * Clean up sizing of everything :/.
-* Interaction Between Meteor and Player: Add logic for when a meteor interacts with the player, such as being deflected or destroyed.
-* Background: Add a dynamic or static background to make the game more visually appealing.
-* Scoring System: Implement a system that tracks the number of meteors deflected or destroyed.
+* Fix deflect bug about it getting hit multiple times.
 * Sound Effects: Add sounds for meteor deflections, explosions, and other game events.
 * Game Over Mechanism: Implement a condition where the game ends (e.g., a meteor hits the player).
 UI/UX Enhancements: Improve the game's user interface, such as adding a start screen, pause button, and game over screen.
