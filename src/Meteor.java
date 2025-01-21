@@ -1,3 +1,4 @@
+package src;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
