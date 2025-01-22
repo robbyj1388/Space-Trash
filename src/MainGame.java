@@ -122,7 +122,7 @@ public class MainGame extends Application {
      */
     private void setupBackground(Pane root) {
         try {
-            FileInputStream input = new FileInputStream("backgroundImg.png");
+            FileInputStream input = new FileInputStream("src\\backgroundImg.png");
             Image image = new Image(input);
             ImageView backgroundView = new ImageView(image);
 

@@ -15,8 +15,8 @@ public class Meteor {
     private double dx = 0.0; // Horizontal velocity for diagonal movement
     private int velocity = 0; // Vertical speed of the meteor
     public Shape shape = null; // The shape representing the meteor
-    private final Double maxSize = 50.0; // Maximum size of the meteor
-    private final Double minSize = 30.0; // Minimum size of the meteor
+    private final Double maxSize = 15.0; // Maximum size of the meteor
+    private final Double minSize = 14.0; // Minimum size of the meteor
     private final Random randShape = new Random(); // Randomizer for shape selection
     private final Random randSlope = new Random(); // Randomizer for movement
     private Timeline timeline; // Animation timeline to simulate falling
@@ -88,7 +88,7 @@ public class Meteor {
      */
     private void move() {
         y += velocity; // Increment the y-coordinate by the vertical velocity
-        x += randSlope.nextDouble() * 5; // Increment the x-coordinate by the horizontal velocity IS CAUSEING THE SHAKING EFFECT.
+       // x += randSlope.nextDouble() * 5; // Increment the x-coordinate by the horizontal velocity IS CAUSEING THE SHAKING EFFECT.
 
         // Update the position of the meteor
         setPosition(x, y);
