@@ -1,4 +1,5 @@
-package src;
+package com.example;
+
 import javafx.application.Application;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -32,6 +33,9 @@ public class MainGame extends Application {
 
     public static int score = 0; // Keep score for each meteor hit
     private Text scoreText; // Display the score
+
+    // PS Controller Websocket Setup
+    // PSMoveClient webSocket = new PSMoveClient(null)
 
     /**
      * The start method. Required by Application.
@@ -122,7 +126,7 @@ public class MainGame extends Application {
      */
     private void setupBackground(Pane root) {
         try {
-            FileInputStream input = new FileInputStream("src\\backgroundImg.png");
+            FileInputStream input = new FileInputStream("src\\main\\java\\com\\example\\backgroundImg.png");
             Image image = new Image(input);
             ImageView backgroundView = new ImageView(image);
 

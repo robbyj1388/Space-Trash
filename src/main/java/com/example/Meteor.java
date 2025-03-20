@@ -1,4 +1,4 @@
-package src;
+package com.example;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,7 +18,7 @@ public class Meteor {
     private final Double maxSize = 15.0; // Maximum size of the meteor
     private final Double minSize = 14.0; // Minimum size of the meteor
     private final Random randShape = new Random(); // Randomizer for shape selection
-    private final Random randSlope = new Random(); // Randomizer for movement
+    //private final Random randSlope = new Random(); // Randomizer for movement
     private Timeline timeline; // Animation timeline to simulate falling
 
     /**
