@@ -212,8 +212,11 @@ public class MainGame extends Application {
         for (Meteor meteor : new ArrayList<>(meteors)) { // Avoid ConcurrentModificationException
             if (meteor.shape.getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || meteor.shape.getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
-                meteor.deflect(); // Deflect the meteor upon collision
-                score++;
+                        meteor.deflect(); // Deflect the meteor upon collision
+                        // if meteor is a circle  or squarethen up the score.
+                        if (meteor.shapeName.equals("circle") || meteor.shapeName.equals("square")){ 
+                            score++; 
+                        }
                 scoreText.setText("Score: " + score);
             }
         }
