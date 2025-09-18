@@ -34,9 +34,6 @@ public class MainGame extends Application {
     public static int score = 0; // Keep score for each meteor hit
     private Text scoreText; // Display the score
 
-    // PS Controller Websocket Setup
-    // PSMoveClient webSocket = new PSMoveClient(null)
-
     /**
      * The start method. Required by Application.
      *
@@ -126,22 +123,21 @@ public class MainGame extends Application {
      */
     private void setupBackground(Pane root) {
         try {
-            FileInputStream input = new FileInputStream("src\\main\\java\\com\\example\\backgroundImg.png");
-            Image image = new Image(input);
+            // Load image from resources (src/main/resources/backgroundImg.png)
+            Image image = new Image(getClass().getResourceAsStream("/backgroundImg.png"));
             ImageView backgroundView = new ImageView(image);
 
-            // Make the background image cover the window
+            // Stretch to fill pane without preserving ratio
             backgroundView.setPreserveRatio(false);
-            backgroundView.setFitWidth(root.getWidth());
-            backgroundView.setFitHeight(root.getHeight());
 
-            // Update the image dimensions on window resize
-            root.widthProperty().addListener((obs, oldVal, newVal) -> backgroundView.setFitWidth(newVal.doubleValue()));
-            root.heightProperty()
-                    .addListener((obs, oldVal, newVal) -> backgroundView.setFitHeight(newVal.doubleValue()));
+            // Bind size to pane size
+            backgroundView.fitWidthProperty().bind(root.widthProperty());
+            backgroundView.fitHeightProperty().bind(root.heightProperty());
 
-            root.getChildren().add(0, backgroundView); // Add background to the root as the first child
+            // Add background as first child (bottom)
+            root.getChildren().add(0, backgroundView);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error loading background image: " + e.getMessage());
         }
     }

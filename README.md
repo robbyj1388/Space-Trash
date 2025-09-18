@@ -1,5 +1,5 @@
 # Space Trash
-A simple game where meteors fall from the sky, and the player must deflect them to avoid destruction. The player can interact with meteors, and the game features randomized meteor types, and speeds.
+A videogame where meteors fall from the sky, and the player must deflect them to avoid destruction. The player can interact with meteors, and the game features randomized meteor types, and speeds.
 
 # Features added
 * Meteors fall from the top of the screen at random speeds and positions.
