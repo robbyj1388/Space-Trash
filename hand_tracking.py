@@ -3,12 +3,15 @@ import mediapipe as mp
 import socket
 import json
 
+
+# source venv/bin/activate
+
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 cap = cv2.VideoCapture(0)
 
 sock = socket.socket()
-sock.connect(('localhost', 5050))
+sock.connect(('localhost', 5555))
 
 while True:
     ret, frame = cap.read()

@@ -31,6 +31,7 @@ public class MainGame extends Application {
     private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Track player pressed keys
 
+
     public static int score = 0; // Keep score for each meteor hit
     private Text scoreText; // Display the score
 
@@ -49,6 +50,11 @@ public class MainGame extends Application {
         stage.setTitle("Space Trash");
         stage.setScene(scene);
         stage.show();
+
+        // Start server for reading input
+        HandServer server = new HandServer(5555);
+        server.start(); // runs in its own thread
+
 
         // Add score display
         scoreText = new Text("Score: 0");
