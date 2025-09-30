@@ -50,6 +50,13 @@ public class MainGame extends Application {
         stage.setScene(scene);
         stage.show();
 
+
+        // Start server for reading input
+        HandServer server = new HandServer(5555);
+        server.start(); // runs in its own thread
+    
+
+
         // Add score display
         scoreText = new Text("Score: 0");
         scoreText.setFill(Color.WHITE);
