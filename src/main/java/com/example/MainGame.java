@@ -23,6 +23,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class MainGame extends Application {
+    private HandServer server = new HandServer(5555);
     private Pane root;
     private Random random = new Random();
     private Paddle leftPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
@@ -42,6 +43,9 @@ public class MainGame extends Application {
      * @param stage the primary stage for this application
      */
     public void start(Stage stage) {
+        // start server for hand tracking
+        server.start();
+
         root = new Pane();
         setupBackground(root);
 
@@ -49,13 +53,6 @@ public class MainGame extends Application {
         stage.setTitle("Space Trash");
         stage.setScene(scene);
         stage.show();
-
-
-        // Start server for reading input
-        HandServer server = new HandServer(5555);
-        server.start(); // runs in its own thread
-    
-
 
         // Add score display
         scoreText = new Text("Score: 0");
@@ -76,6 +73,11 @@ public class MainGame extends Application {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                // Hand tracking 
+                updateLeftPaddle(leftPaddle);
+                updateRightPaddle(rightPaddle);
+                
+                // keyboard tracking
                 // Left paddle movement
                 if (pressedKeys.contains(KeyCode.W)) {
                     leftPaddle.moveUp();
@@ -123,6 +125,70 @@ public class MainGame extends Application {
         scene.heightProperty().addListener((obs, oldVal, newVal) -> updatePlayerPosition(scene));
     }
 
+
+    /**
+     * LEFT HAND
+     * Maps the hand’s normalized coordinates (0.0–1.0) to the scene’s pixel coordinates
+     * and moves the paddle accordingly.
+     */
+    private void updateLeftPaddle(Paddle paddle) {
+        double handX = server.lx; // normalized 0–1
+        double handY = server.ly; // normalized 0–1
+
+        // Map normalized coordinates (from Python) to actual screen pixels
+        double targetX = handX * root.getWidth() - paddle.getWidth() / 2;
+        double targetY = handY * root.getHeight() - paddle.getHeight() / 2;
+
+        // Keep the paddle within scene bounds
+        targetX = Math.max(0, Math.min(targetX, root.getWidth() - paddle.getWidth()));
+        targetY = Math.max(0, Math.min(targetY, root.getHeight() - paddle.getHeight()));
+
+        // Smooth movement (optional)
+        double lerpFactor = 0.2;
+        double newX = paddle.getX() + (targetX - paddle.getX()) * lerpFactor;
+        double newY = paddle.getY() + (targetY - paddle.getY()) * lerpFactor;
+        
+        if (newX > -9 && newX < 9){
+          return;
+        }
+
+        System.out.println(newX);
+        System.out.println(newY);
+         
+        paddle.setX(newX);
+        paddle.setY(newY);
+    }
+
+    /**
+     * RIGHT HAND
+     * Maps the hand’s normalized coordinates (0.0–1.0) to the scene’s pixel coordinates
+     * and moves the paddle accordingly.
+     */
+    private void updateRightPaddle(Paddle paddle) {
+        double handX = server.rx; // normalized 0–1
+        double handY = server.ry; // normalized 0–1
+
+        // Map normalized coordinates (from Python) to actual screen pixels
+        double targetX = handX * root.getWidth() - paddle.getWidth() / 2;
+        double targetY = handY * root.getHeight() - paddle.getHeight() / 2;
+
+        // Keep the paddle within scene bounds
+        targetX = Math.max(0, Math.min(targetX, root.getWidth() - paddle.getWidth()));
+        targetY = Math.max(0, Math.min(targetY, root.getHeight() - paddle.getHeight()));
+
+        // Smooth movement (optional)
+        double lerpFactor = 0.2;
+        double newX = paddle.getX() + (targetX - paddle.getX()) * lerpFactor;
+        double newY = paddle.getY() + (targetY - paddle.getY()) * lerpFactor;
+        
+
+        System.out.println(newX);
+        System.out.println(newY);
+
+        paddle.setX(newX);
+        paddle.setY(newY);
+    }
+
     /**
      * Sets up the background image and makes it responsive to window resizing.
      *
@@ -157,11 +223,10 @@ public class MainGame extends Application {
      * @param size the size of the paddles
      */
     private void spawnPlayer(double x, double y, double size) {
-        leftPaddle.setLayoutX(x);
-        leftPaddle.setLayoutY(y);
-        rightPaddle.setLayoutX(x + distanceBetweenPaddles); // spawn paddles with distance between them.
-        rightPaddle.setLayoutY(y);
-
+        leftPaddle.setX(x);
+        leftPaddle.setY(y);
+        rightPaddle.setX(x + distanceBetweenPaddles);
+        rightPaddle.setY(y);
         root.getChildren().addAll(leftPaddle, rightPaddle);
     }
 
