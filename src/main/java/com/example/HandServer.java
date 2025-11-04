@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import org.json.JSONObject;
 
 /**
  * HandServer
@@ -16,14 +15,24 @@ public class HandServer {
 
     private int port;
 
+    // Store left hand coordinates (volatile for thread safety)
+    public volatile double lx;
+    public volatile double ly;
+
+    // Store right hand coordinates (volatile for thread safety)
+    public volatile double rx;
+    public volatile double ry;
+
     public HandServer(int port) {
         this.port = port;
     }
 
+    /** Starts the server on a background thread */
     public void start() {
-        new Thread(this::runServer).start(); // run in separate thread
+        new Thread(this::runServer).start();
     }
 
+    /** Handles incoming socket connections and messages */
     private void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Hand Server listening on port " + port);
@@ -32,21 +41,31 @@ public class HandServer {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Python client connected: " + clientSocket.getInetAddress());
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream())
+            );
 
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
-                    JSONObject pos = new JSONObject(line);
-                    double x = pos.getDouble("x");
-                    double y = pos.getDouble("y");
+                    String[] parts = line.split(",");
+                    if (parts.length == 4) {
+                        double lx = Double.parseDouble(parts[0]);
+                        double ly = Double.parseDouble(parts[1]);
+                        double rx = Double.parseDouble(parts[2]);
+                        double ry = Double.parseDouble(parts[3]);
 
-                    System.out.printf("Received hand coordinates: x=%.3f, y=%.3f%n", x, y);
-
-                    // TODO: Forward x/y to JavaFX Application Thread to move player
-
+                        // Update coordinates
+                        setLeftX(lx);
+                        setLeftY(ly);
+                        setRightX(rx);
+                        setRightY(ry);
+                    } else {
+                        System.err.println("Invalid data (expected 4 parts): " + line);
+                    }
                 } catch (Exception e) {
-                    System.err.println("Invalid JSON: " + line);
+                    System.err.println("Error parsing line: " + line);
+                    e.printStackTrace();
                 }
             }
 
@@ -57,10 +76,9 @@ public class HandServer {
         }
     }
 
-    // Simple main method for testing
-    public static void main(String[] args) {
-        HandServer server = new HandServer(5555);
-        server.start();
-    }
+    public void setLeftX(double x) { lx = x; }
+    public void setLeftY(double y) { ly = y; }
+    public void setRightX(double x) { rx = x; }
+    public void setRightY(double y) { ry = y; }
 }
 

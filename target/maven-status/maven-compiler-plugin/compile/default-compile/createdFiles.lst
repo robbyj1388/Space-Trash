@@ -1,5 +1,5 @@
 com/example/Meteor.class
 com/example/MainGame.class
 com/example/Paddle.class
-com/example/HandTrackingListener.class
+com/example/HandServer.class
 com/example/MainGame$1.class
