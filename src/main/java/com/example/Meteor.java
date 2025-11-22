@@ -169,4 +169,8 @@ public class Meteor {
     public void setTimeline(Timeline timeline) {
         this.timeline = timeline;
     }
+
+    public String getShapeName() {
+        return shapeName;
+    }
 }
