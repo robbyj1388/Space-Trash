@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * MainGame is the primary class for the "Space Trash" game.
+ * MainGame is the primary class for Space Trash.
  * It sets up the game window, paddles, meteors, handles input, 
  * and updates the game state every frame.
  */
@@ -33,6 +33,8 @@ public class MainGame extends Application {
     private int distanceBetweenPaddles = 300; // Distance between paddles on spawn
     private List<Meteor> meteors = new ArrayList<>(); // List of active meteors
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Tracks keys currently pressed
+
+    private double gameTime = 0; // Tracks how long the game has been running in seconds
 
     public static int score = 0;
     private Text scoreText; // Displays the current score
@@ -73,8 +75,17 @@ public class MainGame extends Application {
 
         // Game loop using AnimationTimer
         AnimationTimer gameLoop = new AnimationTimer() {
+            private long lastTime = 0;
+
             @Override
             public void handle(long now) {
+                if (lastTime > 0) {
+                    // Convert nanoseconds to seconds and increment game time
+                    double deltaTime = (now - lastTime) / 1_000_000_000.0;
+                    gameTime += deltaTime;
+                }
+                lastTime = now;
+
                 updateLeftPaddle(leftPaddle);
                 updateRightPaddle(rightPaddle);
 
@@ -92,7 +103,7 @@ public class MainGame extends Application {
         };
         gameLoop.start();
 
-        // Spawn meteors every second
+        // Spawn meteors periodically
         Timeline meteorSpawner = new Timeline(new KeyFrame(
                 Duration.seconds(1), e -> spawnMeteor(scene.getWidth())));
         meteorSpawner.setCycleCount(Timeline.INDEFINITE);
@@ -183,11 +194,16 @@ public class MainGame extends Application {
 
     /**
      * Spawns a new meteor at a random horizontal position at the top of the scene.
+     * Meteor speed increases gradually as game time increases.
      * @param sceneWidth the width of the scene to constrain meteor spawn
      */
     private void spawnMeteor(double sceneWidth) {
         Color color = Color.RED;
-        int velocity = 2 + random.nextInt(4);
+
+        // Base velocity + additional velocity based on elapsed game time
+        int baseVelocity = 2 + random.nextInt(4);
+        int speedIncrease = (int) (gameTime / 10); // Speed increases by 1 every 10 seconds
+        int velocity = baseVelocity + speedIncrease;
 
         Meteor meteor = new Meteor(velocity, 0, color);
 
