@@ -21,6 +21,7 @@ public class Meteor {
     private final Random randShape = new Random(); // Randomizer for shape selection
     //private final Random randSlope = new Random(); // Randomizer for movement
     private Timeline timeline; // Animation timeline to simulate falling
+    private boolean collided = false; //Checks if initially collided to prevent random incremental scores
 
     /**
      * Constructor for creating a meteor with random shape and size.
@@ -142,6 +143,14 @@ public class Meteor {
         return velocity;
     }
 
+    public boolean getCollided() {
+        return collided;
+    }
+    
+    public void setCollided(boolean x) {
+        collided = x;
+    }
+    
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }

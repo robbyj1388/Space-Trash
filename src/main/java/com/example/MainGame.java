@@ -126,6 +126,10 @@ public class MainGame extends Application {
      * @param paddle the left paddle to update
      */
     private void updateLeftPaddle(Paddle paddle) {
+        if(server.lx == 0.0) //TODO: Test if this works with hand tracking
+        {
+            return;
+        }
         double handX = server.lx;
         double handY = server.ly;
 
@@ -231,14 +235,18 @@ public class MainGame extends Application {
             if (meteor.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || meteor.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
 
-                meteor.deflect();
+                if(!meteor.getCollided())
+                {
+                    meteor.setCollided(true);
+                    meteor.deflect();
 
-                // Update score if meteor is circle or square
-                String shapeName = meteor.getShapeName();
-                if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
-                    score++;
+                    // Update score if meteor is circle or square
+                    String shapeName = meteor.getShapeName();
+                    if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
+                        score++;
+                    }
+                    scoreText.setText("Score: " + score);
                 }
-                scoreText.setText("Score: " + score);
             }
         }
     }

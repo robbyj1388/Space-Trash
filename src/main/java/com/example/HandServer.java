@@ -56,6 +56,7 @@ public class HandServer {
                         double ry = Double.parseDouble(parts[3]);
 
                         // Update coordinates
+                        
                         setLeftX(lx);
                         setLeftY(ly);
                         setRightX(rx);

@@ -56,6 +56,8 @@ try:
         rx = -1 if rx is None else rx
         ry = -1 if ry is None else ry
 
+        print(lx)
+
         data_str = f"{lx},{ly},{rx},{ry}\n"
         sock.sendall(data_str.encode())
 
