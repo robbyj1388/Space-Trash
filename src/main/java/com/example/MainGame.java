@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,11 @@ public class MainGame extends Application {
     private int distanceBetweenPaddles = 300; // Distance between paddles on spawn
     private List<Meteor> meteors = new ArrayList<>(); // List of active meteors
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Tracks keys currently pressed
+
+    private ArrayList<Double[]> leftPositions = new ArrayList<>() ;
+    private ArrayList<Double[]> rightPositions = new ArrayList<>();
+    private ArrayList<Double> timePositions = new ArrayList<>();
+
 
     private double gameTime = 0; // Tracks how long the game has been running in seconds
 
@@ -89,6 +95,7 @@ public class MainGame extends Application {
                 updateLeftPaddle(leftPaddle);
                 updateRightPaddle(rightPaddle);
 
+
                 // Manual keyboard movement for paddles
                 if (pressedKeys.contains(KeyCode.W)) leftPaddle.moveUp();
                 if (pressedKeys.contains(KeyCode.S)) leftPaddle.moveDown(scene.getHeight());
@@ -108,6 +115,12 @@ public class MainGame extends Application {
                 Duration.seconds(1), e -> spawnMeteor(scene.getWidth())));
         meteorSpawner.setCycleCount(Timeline.INDEFINITE);
         meteorSpawner.play();
+
+        // Grabs hand positions and logs them periodically
+        Timeline handLogger = new Timeline( new KeyFrame(
+                Duration.seconds(1), e -> logPositions()));
+        handLogger.setCycleCount(Timeline.INDEFINITE);
+        handLogger.play();
 
         // Check collisions frequently
         Timeline collisionChecker = new Timeline(new KeyFrame(
@@ -224,6 +237,24 @@ public class MainGame extends Application {
                 meteors.remove(meteor);
             }
         });
+    }
+
+    /** 
+     * Logs the current hand positions inside two arraylists
+     */
+    public void logPositions() {
+        System.out.println("LOGGED!!");
+        leftPositions.add( new Double[] {leftPaddle.getX(), leftPaddle.getY() });
+        rightPositions.add( new Double[] {rightPaddle.getX(), rightPaddle.getY() });
+        timePositions.add( gameTime );
+
+    }
+
+    /**
+     * Outputs the log to a file of the name TODO: Choose filename
+     */
+    public void outputLog() {
+        
     }
 
     /**
