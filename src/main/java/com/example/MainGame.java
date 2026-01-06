@@ -1,24 +1,24 @@
 package com.example;
 
-import javafx.application.Application;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.scene.input.KeyCode;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * MainGame is the primary class for Space Trash.
@@ -35,6 +35,8 @@ public class MainGame extends Application {
     private List<Meteor> meteors = new ArrayList<>(); // List of active meteors
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Tracks keys currently pressed
 
+    private List<AreaButton> areaButtons = new ArrayList<>();
+
     private ArrayList<Double[]> leftPositions = new ArrayList<>() ;
     private ArrayList<Double[]> rightPositions = new ArrayList<>();
     private ArrayList<Double> timePositions = new ArrayList<>();
@@ -44,6 +46,17 @@ public class MainGame extends Application {
 
     public static int score = 0;
     private Text scoreText; // Displays the current score
+    private Text titleText; // Displays the title
+    private AreaButton startButton;
+
+
+    enum gameState {
+        menu, game, end
+    }
+    gameState state = gameState.menu;
+
+
+
 
     /**
      * Starts the JavaFX application and initializes all game elements.
@@ -72,6 +85,20 @@ public class MainGame extends Application {
         scoreText.setY(30);
         root.getChildren().add(scoreText);
 
+
+        // Title
+        titleText = new Text("SPACE TRASH");
+        titleText.setFill(Color.WHITE);
+        titleText.setFont(Font.font(40));
+        titleText.setX(stage.getWidth()/2);
+        titleText.setY(stage.getHeight()/3);
+        titleText.setTextAlignment(TextAlignment.CENTER);
+        root.getChildren().add(titleText);
+        
+        startButton = new AreaButton(stage.getWidth()/2, stage.getHeight()/2, 100.0, "START", gameState.game);
+        root.getChildren().add(startButton.getShape());
+        areaButtons.add(startButton);
+        
         // Spawn player paddles
         spawnPlayer(scene.getWidth() * 0.3, scene.getHeight() * 0.75, 50.0);
 
@@ -215,6 +242,10 @@ public class MainGame extends Application {
      * @param sceneWidth the width of the scene to constrain meteor spawn
      */
     private void spawnMeteor(double sceneWidth) {
+        if(!state.equals(gameState.game))
+        {
+            return;
+        }
         Color color = Color.RED;
 
         // Base velocity + additional velocity based on elapsed game time
@@ -239,11 +270,11 @@ public class MainGame extends Application {
         });
     }
 
+
     /** 
      * Logs the current hand positions inside two arraylists
      */
     public void logPositions() {
-        System.out.println("LOGGED!!");
         leftPositions.add( new Double[] {leftPaddle.getX(), leftPaddle.getY() });
         rightPositions.add( new Double[] {rightPaddle.getX(), rightPaddle.getY() });
         timePositions.add( gameTime );
@@ -262,7 +293,7 @@ public class MainGame extends Application {
      * Increases score if a meteor collides and deflects the meteor.
      */
     private void checkCollisions() {
-        for (Meteor meteor : new ArrayList<>(meteors)) {
+        for (Meteor meteor : new ArrayList<>(meteors)) { // Meteor collisions
             if (meteor.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || meteor.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
 
@@ -280,7 +311,42 @@ public class MainGame extends Application {
                 }
             }
         }
+        for(AreaButton button : new ArrayList<>(areaButtons))
+        {
+            if (button.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
+                    || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
+                
+                        button.increment();
+                }
+                else
+                {
+                    button.decrement();
+                }
+                if(button.getTimer() > 60)
+                {
+                    setState( button.getState() );
+                }
+        }
     }
+
+
+
+    /**
+     * Sets the game state and runs logic regarding it
+     * @param gameState the state to set
+     */
+    public void setState(gameState x)
+    {
+        state = x;
+        if(state == gameState.game) //removes all non game elements
+        {
+            root.getChildren().remove(titleText);
+            root.getChildren().remove(startButton.getShape());
+            
+        }
+    }
+
+
 
     /**
      * Launches the JavaFX application.
