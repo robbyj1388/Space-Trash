@@ -35,9 +35,9 @@ public class MainGame extends Application {
     private List<Meteor> meteors = new ArrayList<>(); // List of active meteors
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Tracks keys currently pressed
 
-    private List<AreaButton> areaButtons = new ArrayList<>();
+    private List<AreaButton> areaButtons = new ArrayList<>(); // List of active buttons
 
-    private ArrayList<Double[]> leftPositions = new ArrayList<>() ;
+    private ArrayList<Double[]> leftPositions = new ArrayList<>() ; // For logging left, right, and time of log
     private ArrayList<Double[]> rightPositions = new ArrayList<>();
     private ArrayList<Double> timePositions = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class MainGame extends Application {
     public static int score = 0;
     private Text scoreText; // Displays the current score
     private Text titleText; // Displays the title
-    private AreaButton startButton;
+    private AreaButton startButton; // The start button
 
 
     enum gameState {
@@ -90,13 +90,14 @@ public class MainGame extends Application {
         titleText = new Text("SPACE TRASH");
         titleText.setFill(Color.WHITE);
         titleText.setFont(Font.font(40));
-        titleText.setX(stage.getWidth()/2);
+        titleText.setX(stage.getWidth()/2); //TODO: set x to center text to display
         titleText.setY(stage.getHeight()/3);
         titleText.setTextAlignment(TextAlignment.CENTER);
         root.getChildren().add(titleText);
         
-        startButton = new AreaButton(stage.getWidth()/2, stage.getHeight()/2, 100.0, "START", gameState.game);
+        startButton = new AreaButton(stage.getWidth()/2, stage.getHeight()/2, 100.0, "START", gameState.game); //Creates the start button
         root.getChildren().add(startButton.getShape());
+        root.getChildren().add(startButton.getInnerShape());
         areaButtons.add(startButton);
         
         // Spawn player paddles
@@ -315,7 +316,6 @@ public class MainGame extends Application {
         {
             if (button.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
-                
                         button.increment();
                 }
                 else
