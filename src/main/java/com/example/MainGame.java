@@ -161,6 +161,10 @@ public class MainGame extends Application {
         scene.heightProperty().addListener((obs, oldVal, newVal) -> updatePlayerPosition(scene));
     }
 
+    public void stop() {
+        System.out.println("PROGRAM STOPPING");
+        
+    }
     /**
      * Updates the left paddle's position based on hand tracking input.
      * Uses linear interpolation for smooth movement.
@@ -283,10 +287,10 @@ public class MainGame extends Application {
     }
 
     /**
-     * Outputs the log to a file of the name TODO: Choose filename
+     * Outputs the log to a file of the name
      */
     public void outputLog() {
-        
+        //TODO
     }
 
     /**
@@ -312,7 +316,7 @@ public class MainGame extends Application {
                 }
             }
         }
-        for(AreaButton button : new ArrayList<>(areaButtons))
+        for(AreaButton button : new ArrayList<>(areaButtons)) //Area buttons
         {
             if (button.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
@@ -325,6 +329,7 @@ public class MainGame extends Application {
                 if(button.getTimer() > 60)
                 {
                     setState( button.getState() );
+                    
                 }
         }
     }
@@ -342,7 +347,7 @@ public class MainGame extends Application {
         {
             root.getChildren().remove(titleText);
             root.getChildren().remove(startButton.getShape());
-            
+            root.getChildren().remove(startButton.getInnerShape());            
         }
     }
 

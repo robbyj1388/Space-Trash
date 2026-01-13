@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,6 +24,8 @@ public class HandServer {
     public volatile double rx;
     public volatile double ry;
 
+    ServerSocket serverSocket;
+
     public HandServer(int port) {
         this.port = port;
     }
@@ -36,6 +39,7 @@ public class HandServer {
     private void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Hand Server listening on port " + port);
+            
 
             // Wait for a Python client to connect
             Socket clientSocket = serverSocket.accept();
