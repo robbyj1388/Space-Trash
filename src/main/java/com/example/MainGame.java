@@ -102,6 +102,7 @@ public class MainGame extends Application {
         startButton = new AreaButton((stage.getWidth()/2)-50, stage.getHeight()/2, 100.0, "START", gameState.game); //Creates the start button
         root.getChildren().add(startButton.getShape());
         root.getChildren().add(startButton.getInnerShape());
+        root.getChildren().add(startButton.getText());
         areaButtons.add(startButton);
         
         // Spawn player paddles
@@ -363,7 +364,8 @@ public class MainGame extends Application {
         {
             root.getChildren().remove(titleText);
             root.getChildren().remove(startButton.getShape()); 
-            root.getChildren().remove(startButton.getInnerShape());            
+            root.getChildren().remove(startButton.getInnerShape());   
+            root.getChildren().remove(startButton.getText());         
         }
     }
 

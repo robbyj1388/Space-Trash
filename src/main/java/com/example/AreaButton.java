@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 
 /**
@@ -33,14 +34,24 @@ public class AreaButton {
         this.x = x;
         this.y = y;
         this.size = size;
-        this.text = new Text(text);
+        
         this.toState = toState; //What the gamestate gets changed to
-        Rectangle rect = new Rectangle( x - size/2, y - size/2, size, size);
-        Rectangle inner_rect = new Rectangle( x, y, 3, 3); // The overlay to showcase how close to be done
+        Rectangle rect = new Rectangle( x , y , size, size);
+        Rectangle inner_rect = new Rectangle( x, y, size, size); // The overlay to showcase how close to be done
         rect.setStroke(Color.WHITE);
         inner_rect.setFill(Color.WHITE);
+        rect.setArcHeight(size/4);
+        rect.setArcWidth(size/4);
+        inner_rect.setArcHeight(size/4);
+        inner_rect.setArcWidth(size/4);
+
+        //Text
+        Text t = new Text(x+(size/2), y+(size/2), ""); //TODO: Get text aligned correctly
+        t.setFill(Color.WHITE);
+        t.setTextAlignment(TextAlignment.CENTER);
         this.shape = rect;
         this.inner_shape = inner_rect;
+        this.text = t;
         setPos(x, y);
         
     }
@@ -56,6 +67,9 @@ public class AreaButton {
     public Shape getInnerShape() {
         return inner_shape;
     }
+    public Text getText() {
+        return text;
+    }
 
     /**
      * Increments the buttons timer
@@ -64,8 +78,7 @@ public class AreaButton {
     {
         timer++;
         double timer_complete = ( timer / end_timer ); //How complete the timer is
-        inner_shape.setWidth( timer_complete * size );
-        inner_shape.setHeight( timer_complete * size );
+        changeInnerSize( timer_complete );
     }
     /**
      * Decrements the buttons timer
@@ -76,8 +89,16 @@ public class AreaButton {
            timer--;
         }
         double timer_complete = ( timer / end_timer ); //How complete the timer is
-        inner_shape.setWidth( timer_complete * size );
-        inner_shape.setHeight( timer_complete * size );
+        changeInnerSize( timer_complete );
+    }
+    
+    /**
+     * Changes the size of the inner shape
+     * @return
+     */
+    public void changeInnerSize(double size) {
+        inner_shape.setScaleX(size);
+        inner_shape.setScaleY(size);
     }
     /**
      * Gets the buttons target state
@@ -101,6 +122,7 @@ public class AreaButton {
         y -= size/2;
         shape.relocate(x, y);
         inner_shape.relocate(x, y);
+        text.relocate((x+size/2), y+size/2);
     }
 
 
