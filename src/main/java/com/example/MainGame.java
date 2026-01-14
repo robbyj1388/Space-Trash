@@ -10,6 +10,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -90,9 +91,11 @@ public class MainGame extends Application {
         titleText = new Text("SPACE TRASH");
         titleText.setFill(Color.WHITE);
         titleText.setFont(Font.font(40));
-        titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setX(root.getWidth()/2); 
-        titleText.setY(root.getHeight()/3);
+        titleText.setTextOrigin(VPos.BOTTOM);
+        titleText.layoutXProperty().bind(scene.widthProperty().subtract(titleText.prefWidth(-1)).divide(2));
+        titleText.layoutYProperty().bind(scene.heightProperty().subtract(titleText.prefHeight(-1)).divide(3));
+
+
         
         root.getChildren().add(titleText);
         
@@ -301,8 +304,6 @@ public class MainGame extends Application {
      * Goes through every UI element that needs realigned based on window resize
      */
     public void windowResizeUI() {
-        titleText.setX(root.getWidth()/2); 
-        titleText.setY(root.getHeight()/3);
         startButton.setPos(root.getWidth()/2, root.getHeight()/2);
         
          
