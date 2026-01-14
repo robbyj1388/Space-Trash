@@ -35,13 +35,13 @@ public class AreaButton {
         this.size = size;
         this.text = new Text(text);
         this.toState = toState; //What the gamestate gets changed to
-
-        Rectangle rect = new Rectangle( x, y, size, size);
+        Rectangle rect = new Rectangle( x - size/2, y - size/2, size, size);
         Rectangle inner_rect = new Rectangle( x, y, 3, 3); // The overlay to showcase how close to be done
         rect.setStroke(Color.WHITE);
         inner_rect.setFill(Color.WHITE);
         this.shape = rect;
         this.inner_shape = inner_rect;
+        setPos(x, y);
         
     }
     /**
@@ -72,7 +72,9 @@ public class AreaButton {
      */
     public void decrement()
     {
-        timer--;
+        if(timer > 0){
+           timer--;
+        }
         double timer_complete = ( timer / end_timer ); //How complete the timer is
         inner_shape.setWidth( timer_complete * size );
         inner_shape.setHeight( timer_complete * size );
@@ -94,6 +96,12 @@ public class AreaButton {
         return timer;
     }
 
+    public void setPos(double x, double y) {
+        x -= size/2;
+        y -= size/2;
+        shape.relocate(x, y);
+        inner_shape.relocate(x, y);
+    }
 
 
 }

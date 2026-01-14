@@ -90,12 +90,13 @@ public class MainGame extends Application {
         titleText = new Text("SPACE TRASH");
         titleText.setFill(Color.WHITE);
         titleText.setFont(Font.font(40));
-        titleText.setX(stage.getWidth()/2); //TODO: set x to center text to display
-        titleText.setY(stage.getHeight()/3);
         titleText.setTextAlignment(TextAlignment.CENTER);
+        titleText.setX(root.getWidth()/2); 
+        titleText.setY(root.getHeight()/3);
+        
         root.getChildren().add(titleText);
         
-        startButton = new AreaButton(stage.getWidth()/2, stage.getHeight()/2, 100.0, "START", gameState.game); //Creates the start button
+        startButton = new AreaButton((stage.getWidth()/2)-50, stage.getHeight()/2, 100.0, "START", gameState.game); //Creates the start button
         root.getChildren().add(startButton.getShape());
         root.getChildren().add(startButton.getInnerShape());
         areaButtons.add(startButton);
@@ -134,6 +135,9 @@ public class MainGame extends Application {
                 if (pressedKeys.contains(KeyCode.DOWN)) rightPaddle.moveDown(scene.getHeight());
                 if (pressedKeys.contains(KeyCode.LEFT)) rightPaddle.moveLeft();
                 if (pressedKeys.contains(KeyCode.RIGHT)) rightPaddle.moveRight(scene.getWidth());
+                windowResizeUI();
+                
+
             }
         };
         gameLoop.start();
@@ -294,6 +298,17 @@ public class MainGame extends Application {
     }
 
     /**
+     * Goes through every UI element that needs realigned based on window resize
+     */
+    public void windowResizeUI() {
+        titleText.setX(root.getWidth()/2); 
+        titleText.setY(root.getHeight()/3);
+        startButton.setPos(root.getWidth()/2, root.getHeight()/2);
+        
+         
+    }
+
+    /**
      * Checks for collisions between meteors and paddles.
      * Increases score if a meteor collides and deflects the meteor.
      */
@@ -346,7 +361,7 @@ public class MainGame extends Application {
         if(state == gameState.game) //removes all non game elements
         {
             root.getChildren().remove(titleText);
-            root.getChildren().remove(startButton.getShape());
+            root.getChildren().remove(startButton.getShape()); 
             root.getChildren().remove(startButton.getInnerShape());            
         }
     }
