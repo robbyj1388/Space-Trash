@@ -39,7 +39,7 @@ public class HandServer {
     private void runServer() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Hand Server listening on port " + port);
-            
+            openServerProgram();
 
             // Wait for a Python client to connect
             Socket clientSocket = serverSocket.accept();
@@ -48,7 +48,7 @@ public class HandServer {
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(clientSocket.getInputStream())
             );
-
+            
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
@@ -85,5 +85,26 @@ public class HandServer {
     public void setLeftY(double y) { ly = y; }
     public void setRightX(double x) { rx = x; }
     public void setRightY(double y) { ry = y; }
+
+    public void openServerProgram() {
+        try {
+            System.out.println("Attempting start of Python program");
+            Process p = Runtime.getRuntime().exec(new String[]{"python3 hand_tracking.py"});
+
+
+            BufferedReader stdInput = new BufferedReader( new InputStreamReader(p.getInputStream()));
+
+            String s = null;
+            while((s =stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Error: Could not automatically run hand_tracking, ensure correct Python version is installed (python10?)!");
+            //TODO: Ensure that is right
+            //e.printStackTrace();
+        }
+    }
 }
 

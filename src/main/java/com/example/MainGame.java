@@ -48,11 +48,16 @@ public class MainGame extends Application {
     public static int score = 0;
     private Text scoreText; // Displays the current score
     private Text titleText; // Displays the title
+    
+    private Text interText; //The text saying what to hit and what to avoid
+    public double interTimer = 3; //How many seconds for the intermission
+    
     private AreaButton startButton; // The start button
+    
 
 
     enum gameState {
-        menu, game, end
+        menu, game, end, intermission
     }
     gameState state = gameState.menu;
 
@@ -96,10 +101,20 @@ public class MainGame extends Application {
         titleText.layoutYProperty().bind(scene.heightProperty().subtract(titleText.prefHeight(-1)).divide(3));
 
 
+        // Intermission text
+        interText = new Text("HIT THESE\n(objects)\n\nAVOID THESE\n(objects)");
+        interText.setFill(Color.WHITE);
+        interText.setTextAlignment(TextAlignment.CENTER);
+        interText.setFont(Font.font(40));
+        interText.setTextOrigin(VPos.CENTER);
+        interText.layoutXProperty().bind(scene.widthProperty().subtract(titleText.prefWidth(-1)).divide(2));
+        interText.layoutYProperty().bind(scene.heightProperty().subtract(titleText.prefHeight(-1)).divide(2));
+
+
         
         root.getChildren().add(titleText);
         
-        startButton = new AreaButton((stage.getWidth()/2)-50, stage.getHeight()/2, 100.0, "START", gameState.game); //Creates the start button
+        startButton = new AreaButton((stage.getWidth()/2)-50, stage.getHeight()/2, 100.0, "START", gameState.intermission); //Creates the start button
         root.getChildren().add(startButton.getShape());
         root.getChildren().add(startButton.getInnerShape());
         root.getChildren().add(startButton.getText());
@@ -118,16 +133,21 @@ public class MainGame extends Application {
 
             @Override
             public void handle(long now) {
+                // Convert nanoseconds to seconds and increment game time
+                double deltaTime = (now - lastTime) / 1_000_000_000.0;
                 if (lastTime > 0) {
-                    // Convert nanoseconds to seconds and increment game time
-                    double deltaTime = (now - lastTime) / 1_000_000_000.0;
                     gameTime += deltaTime;
                 }
                 lastTime = now;
 
                 updateLeftPaddle(leftPaddle);
                 updateRightPaddle(rightPaddle);
-
+                if(getState() == gameState.intermission) {
+                    interTimer -= 1*deltaTime;
+                    if(interTimer <= 0) {
+                        setState(gameState.game);
+                    }
+                }
 
                 // Manual keyboard movement for paddles
                 if (pressedKeys.contains(KeyCode.W)) leftPaddle.moveUp();
@@ -352,6 +372,13 @@ public class MainGame extends Application {
     }
 
 
+    /**
+     * Gets the game state
+     * @return gameState
+     */
+    public gameState getState() {
+        return this.state;
+    }
 
     /**
      * Sets the game state and runs logic regarding it
@@ -359,14 +386,28 @@ public class MainGame extends Application {
      */
     public void setState(gameState x)
     {
-        state = x;
-        if(state == gameState.game) //removes all non game elements
+        
+        //Removing elements
+        if(x != gameState.menu) //menu elements
         {
-            root.getChildren().remove(titleText);
-            root.getChildren().remove(startButton.getShape()); 
-            root.getChildren().remove(startButton.getInnerShape());   
-            root.getChildren().remove(startButton.getText());         
+            if(root.getChildren().contains(titleText)) {
+                root.getChildren().remove(titleText);
+                root.getChildren().remove(startButton.getShape()); 
+                root.getChildren().remove(startButton.getInnerShape());   
+                root.getChildren().remove(startButton.getText()); 
+            }        
         }
+        if(x != gameState.intermission) {
+            if(root.getChildren().contains(interText)) {
+                root.getChildren().remove(interText);
+            }
+        }
+        
+        //Adding elements
+        if( (x == gameState.intermission) && (getState() != x) ) {
+            root.getChildren().add(interText);
+        }
+        this.state = x;
     }
 
 
