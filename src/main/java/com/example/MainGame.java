@@ -38,23 +38,23 @@ public class MainGame extends Application {
 
     private List<AreaButton> areaButtons = new ArrayList<>(); // List of active buttons
 
-    private ArrayList<Double[]> leftPositions = new ArrayList<>() ; // For logging left, right, and time of log
-    private ArrayList<Double[]> rightPositions = new ArrayList<>();
-    private ArrayList<Double> timePositions = new ArrayList<>();
 
-
+    private double gameDuration = 60; // How long until the game is over
     private double gameTime = 0; // Tracks how long the game has been running in seconds
 
     public static int score = 0;
     private Text scoreText; // Displays the current score
     private Text titleText; // Displays the title
+    private Text durationText; // Displays the duration of the current game
+
+    
     
     private Text interText; //The text saying what to hit and what to avoid
     public double interTimer = 3; //How many seconds for the intermission
     
     private AreaButton startButton; // The start button
     
-
+    public Logger logger = new Logger();
 
     enum gameState {
         menu, game, end, intermission
@@ -91,6 +91,12 @@ public class MainGame extends Application {
         scoreText.setY(30);
         root.getChildren().add(scoreText);
 
+        durationText = new Text("TIME LEFT: 60");
+        durationText.setFill(Color.WHITE);
+        durationText.setFont(Font.font(20));
+        durationText.setX(10);
+        durationText.setY(60);
+        root.getChildren().add(durationText);
 
         // Title
         titleText = new Text("SPACE TRASH");
@@ -127,6 +133,11 @@ public class MainGame extends Application {
         scene.setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
+
+        //sets up logger
+        logger.clearLog();
+        logger.log(0, new String[]{"resolution", Double.toString(stage.getWidth()), Double.toString(stage.getHeight())});
+
         // Game loop using AnimationTimer
         AnimationTimer gameLoop = new AnimationTimer() {
             private long lastTime = 0;
@@ -142,11 +153,16 @@ public class MainGame extends Application {
 
                 updateLeftPaddle(leftPaddle);
                 updateRightPaddle(rightPaddle);
+                //TODO: This code is a bit messy
                 if(getState() == gameState.intermission) {
                     interTimer -= 1*deltaTime;
                     if(interTimer <= 0) {
                         setState(gameState.game);
                     }
+                }
+                if(getState() == gameState.game) {
+                    gameDuration -= 1*deltaTime;
+                    durationText.setText("TIME LEFT: " + (int)gameDuration);
                 }
 
                 // Manual keyboard movement for paddles
@@ -174,7 +190,7 @@ public class MainGame extends Application {
 
         // Grabs hand positions and logs them periodically
         Timeline handLogger = new Timeline( new KeyFrame(
-                Duration.seconds(1), e -> logPositions()));
+                Duration.seconds(0.1), e -> logPositions()));
         handLogger.setCycleCount(Timeline.INDEFINITE);
         handLogger.play();
 
@@ -191,7 +207,8 @@ public class MainGame extends Application {
 
     public void stop() {
         System.out.println("PROGRAM STOPPING");
-        
+        logger.log(getGameTime(), new String[]{"This is", "all a", "test"});
+        logger.write();
     }
     /**
      * Updates the left paddle's position based on hand tracking input.
@@ -308,19 +325,16 @@ public class MainGame extends Application {
      * Logs the current hand positions inside two arraylists
      */
     public void logPositions() {
-        leftPositions.add( new Double[] {leftPaddle.getX(), leftPaddle.getY() });
-        rightPositions.add( new Double[] {rightPaddle.getX(), rightPaddle.getY() });
-        timePositions.add( gameTime );
-
+        logger.log(getGameTime(), new String[]{"leftPos", Double.toString(leftPaddle.getX()), Double.toString(leftPaddle.getY())});
+        logger.log(getGameTime(), new String[]{"rightPos", Double.toString(rightPaddle.getX()), Double.toString(rightPaddle.getY())});
+        for (Meteor meteor : new ArrayList<>(meteors)) {
+            logger.log(getGameTime(), new String[]{"Meteor", Double.toString(meteor.getX()), Double.toString(meteor.getY()), meteor.getShape().toString()});
+        }
     }
 
-    /**
-     * Outputs the log to a file of the name
-     */
-    public void outputLog() {
-        //TODO
+    public double getGameTime() {
+        return ((double)Math.round(gameTime*100))/100;
     }
-
     /**
      * Goes through every UI element that needs realigned based on window resize
      */
@@ -356,7 +370,7 @@ public class MainGame extends Application {
         for(AreaButton button : new ArrayList<>(areaButtons)) //Area buttons
         {
             if (button.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
-                    || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
+                    || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent()) && (button.isEnabled())) {
                         button.increment();
                 }
                 else
@@ -391,10 +405,12 @@ public class MainGame extends Application {
         if(x != gameState.menu) //menu elements
         {
             if(root.getChildren().contains(titleText)) {
+                startButton.disable();
                 root.getChildren().remove(titleText);
                 root.getChildren().remove(startButton.getShape()); 
                 root.getChildren().remove(startButton.getInnerShape());   
                 root.getChildren().remove(startButton.getText()); 
+                
             }        
         }
         if(x != gameState.intermission) {
@@ -407,9 +423,15 @@ public class MainGame extends Application {
         if( (x == gameState.intermission) && (getState() != x) ) {
             root.getChildren().add(interText);
         }
+        //Entering GAME state
+        if( (x == gameState.game) && (getState() != x)) {
+            gameDuration = 60; 
+        }
         this.state = x;
     }
 
+    
+    
 
 
     /**

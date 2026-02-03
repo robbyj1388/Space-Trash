@@ -17,13 +17,12 @@ import javafx.scene.text.TextAlignment;
  * Designates an area to be a button that increments/decrements based on how long the paddles are at
  * This only works to change the **game states**
  */
-public class AreaButton {
-    private double x = 0;
-    private double y = 0;
+public class AreaButton { //TODO: BUG: AreaButton doesnt actually get removed from room
     private double size = 0;
     private Text text;
     private double timer = 0;
     private double end_timer = 60; //How long to hover on the button
+    private boolean enabled = false; //if the button is enabled
     Rectangle shape;
     Rectangle inner_shape;
     gameState toState; //Desired state when button used
@@ -31,10 +30,7 @@ public class AreaButton {
     
     public AreaButton(double x, double y, double size, String text, gameState toState)
     {
-        this.x = x;
-        this.y = y;
         this.size = size;
-        
         this.toState = toState; //What the gamestate gets changed to
         Rectangle rect = new Rectangle( x , y , size, size);
         Rectangle inner_rect = new Rectangle( x, y, size, size); // The overlay to showcase how close to be done
@@ -123,6 +119,27 @@ public class AreaButton {
         shape.relocate(x, y);
         inner_shape.relocate(x, y);
         text.relocate((x+size/2), y+size/2);
+    }
+    /**
+     * Disables the Area Button
+     */
+    public void disable() {
+        enabled = false;
+    }
+
+    /**
+     * Enables the Area Button
+     */
+    public void enable() {
+        enabled = true;
+    }
+
+    /**
+     * Checks if the button is enabled
+     * @return boolaen enabled
+     */
+    public boolean isEnabled() {
+        return enabled;
     }
 
 

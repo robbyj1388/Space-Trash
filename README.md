@@ -14,5 +14,10 @@ A videogame where meteors fall from the sky, and the player must deflect them to
 * Add objective ex. "Don't hit triangles" 
 * Fix deflect bug about it getting hit multiple times.
 * Sound Effects: Add sounds for meteor deflections, explosions, and other game events.
-* Game Over Mechanism: Implement a condition where the game ends (e.g., a meteor hits the player).
+* Game Over Mechanism: Implement a condition where the game ends (e.g., a meteor hits the player). #What about a timer?
 UI/UX Enhancements: Improve the game's user interface, such as adding a start screen, pause button, and game over screen.
+
+
+ # What the Logger needs to do:
+ * Only log games, no menu?
+ * Just make a file started by the current time, and the positions of paddles, meteors, time remaining, score, etc.
