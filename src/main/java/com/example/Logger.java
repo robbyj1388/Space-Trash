@@ -17,6 +17,7 @@ public class Logger {
             if (writer == null) {
                 writer = new PrintWriter(logFile);
             }
+            //TODO: replace currentTimeMillis with current game time
             writer.println(System.currentTimeMillis() + ": " + entry);;
             writer.flush();
         } catch (IOException e) {

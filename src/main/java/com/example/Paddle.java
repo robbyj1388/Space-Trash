@@ -3,7 +3,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Paddle extends Rectangle {
-    private double speed = 10.0;
+    private double speed = 3.0;
+
 
     public Paddle(double x, double y, double width, double height, Color color) {
         super(width, height);
@@ -44,7 +45,7 @@ public class Paddle extends Rectangle {
     }
 
     /** 
-     * Mov e paddles x coord up by add the sp eed.
+     * Move paddles x coord up by add the sp eed.
      * 
      * @param sceneWidth the width of the scene.
      */
