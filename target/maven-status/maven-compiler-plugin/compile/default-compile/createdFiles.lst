@@ -1,5 +1,16 @@
+<<<<<<< Updated upstream
 com/example/Meteor.class
 com/example/MainGame.class
 com/example/Paddle.class
 com/example/HandTrackingListener.class
 com/example/MainGame$1.class
+=======
+com\example\AreaButton.class
+com\example\MainGame.class
+com\example\HandServer.class
+com\example\MainGame$gameState.class
+com\example\MainGame$1.class
+com\example\Logger.class
+com\example\Meteor.class
+com\example\Paddle.class
+>>>>>>> Stashed changes

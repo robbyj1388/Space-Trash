@@ -27,6 +27,7 @@ public class MainGame extends Application {
     private Random random = new Random();
     private Paddle leftPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
     private Paddle rightPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
+<<<<<<< Updated upstream
     private int distanceBetweenPaddles = 300; // For spawning
     private List<Meteor> meteors = new ArrayList<>(); // List to store active meteors
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Track player pressed keys
@@ -34,6 +35,34 @@ public class MainGame extends Application {
 
     public static int score = 0; // Keep score for each meteor hit
     private Text scoreText; // Display the score
+=======
+    private int distanceBetweenPaddles = 300; // Distance between paddles on spawn
+    private List<Meteor> meteors = new ArrayList<>(); // List of active meteors
+    private Set<KeyCode> pressedKeys = new HashSet<>(); // Tracks keys currently pressed
+
+    private List<AreaButton> areaButtons = new ArrayList<>(); // List of active buttons
+
+
+    private double gameDuration = 60; // How long until the game is over
+    private double gameTime = 0; // Tracks how long the game has been running in seconds
+
+    public static int score = 0;
+    private Text scoreText; // Displays the current score
+    private Text titleText; // Displays the title
+    private Text durationText; // Displays the duration of the current game
+
+    public Logger logger = new Logger();
+    
+    private Text interText; //The text saying what to hit and what to avoid
+    public double interTimer = 3; //How many seconds for the intermission
+    
+    private AreaButton startButton; // The start button
+
+    enum gameState {
+        menu, game, end, intermission
+    }
+    gameState state = gameState.menu;
+>>>>>>> Stashed changes
 
     /**
      * The start method. Required by Application.
@@ -71,7 +100,11 @@ public class MainGame extends Application {
         scene.setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
+<<<<<<< Updated upstream
         // Game loop for smooth movement
+=======
+        // Game loop using AnimationTimer
+>>>>>>> Stashed changes
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -111,7 +144,11 @@ public class MainGame extends Application {
         meteorSpawner.setCycleCount(Timeline.INDEFINITE);
         meteorSpawner.play();
 
+<<<<<<< Updated upstream
         // Continuously check for collisions between meteors and paddles
+=======
+        // Check collisions frequently
+>>>>>>> Stashed changes
         Timeline collisionChecker = new Timeline(new KeyFrame(
                 Duration.millis(20), e -> checkCollisions()));
         collisionChecker.setCycleCount(Timeline.INDEFINITE);
@@ -122,6 +159,13 @@ public class MainGame extends Application {
         scene.heightProperty().addListener((obs, oldVal, newVal) -> updatePlayerPosition(scene));
     }
 
+<<<<<<< Updated upstream
+=======
+    public void stop() {
+        System.out.println("PROGRAM STOPPING");
+        logger.logEntry("Program stopped");
+    }
+>>>>>>> Stashed changes
     /**
      * Sets up the background image and makes it responsive to window resizing.
      *
@@ -173,10 +217,18 @@ public class MainGame extends Application {
         double x = scene.getWidth() * 0.3;
         double y = scene.getHeight() * 0.75;
 
+<<<<<<< Updated upstream
         leftPaddle.setLayoutX(x);
         leftPaddle.setLayoutY(y);
         rightPaddle.setLayoutX(x + distanceBetweenPaddles);
         rightPaddle.setLayoutY(y);
+=======
+        leftPaddle.setX(x);
+        leftPaddle.setY(y);
+        rightPaddle.setX(x + distanceBetweenPaddles);
+        rightPaddle.setY(y);
+
+>>>>>>> Stashed changes
     }
 
     /**
@@ -197,20 +249,29 @@ public class MainGame extends Application {
         // Add the meteor to the scene
         root.getChildren().add(meteor.getShape());
         meteors.add(meteor);
+        logger.logEntry("Meteor spawned at + " + randomX + " with velocity " + velocity);
 
         // Remove the meteor when it goes out of bounds
         meteor.getShape().layoutYProperty().addListener((observable, oldValue, newValue) -> {
             if ((newValue.doubleValue() < -100) || (newValue.doubleValue() > root.getHeight())) {
                 root.getChildren().remove(meteor.getShape());
                 meteors.remove(meteor);
+                logger.logEntry("Meteor removed");
             }
         });
     }
 
+<<<<<<< Updated upstream
+=======
+    public double getGameTime() {
+        return ((double)Math.round(gameTime*100))/100;
+    }
+>>>>>>> Stashed changes
     /**
      * Checks for collisions between meteors and player paddles.
      */
     private void checkCollisions() {
+<<<<<<< Updated upstream
         for (Meteor meteor : new ArrayList<>(meteors)) { // Avoid ConcurrentModificationException
             if (meteor.shape.getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
                     || meteor.shape.getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
@@ -220,6 +281,26 @@ public class MainGame extends Application {
                             score++; 
                         }
                 scoreText.setText("Score: " + score);
+=======
+        for (Meteor meteor : new ArrayList<>(meteors)) { // Meteor collisions
+            if (meteor.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
+                    || meteor.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
+
+                if(!meteor.getCollided())
+                {
+                    meteor.setCollided(true);
+                    meteor.deflect();
+                    logger.logEntry("Meteor collided with paddle");
+
+                    // Update score if meteor is circle or square
+                    String shapeName = meteor.getShapeName();
+                    if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
+                        score++;
+                        logger.logEntry("Score increased to " + score);
+                    }
+                    scoreText.setText("Score: " + score);
+                }
+>>>>>>> Stashed changes
             }
         }
     }
