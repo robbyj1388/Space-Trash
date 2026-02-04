@@ -62,6 +62,9 @@ public class MainGame extends Application {
         menu, game, end, intermission
     }
     gameState state = gameState.menu;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     /**
@@ -101,8 +104,11 @@ public class MainGame extends Application {
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Game loop for smooth movement
 =======
+=======
+>>>>>>> Stashed changes
         // Game loop using AnimationTimer
 >>>>>>> Stashed changes
         AnimationTimer gameLoop = new AnimationTimer() {
@@ -145,8 +151,11 @@ public class MainGame extends Application {
         meteorSpawner.play();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Continuously check for collisions between meteors and paddles
 =======
+=======
+>>>>>>> Stashed changes
         // Check collisions frequently
 >>>>>>> Stashed changes
         Timeline collisionChecker = new Timeline(new KeyFrame(
@@ -228,6 +237,9 @@ public class MainGame extends Application {
         rightPaddle.setX(x + distanceBetweenPaddles);
         rightPaddle.setY(y);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 
@@ -262,7 +274,10 @@ public class MainGame extends Application {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     public double getGameTime() {
         return ((double)Math.round(gameTime*100))/100;
     }
