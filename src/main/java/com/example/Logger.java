@@ -16,6 +16,7 @@ import java.io.File;
  * "RightPaddle x y" - Where right paddle is
  * "MeSpawn x velocity id shape" - Meteor Spawns 
  * "MeDeflect id" Meteor deflect event
+ * "End 0" Ends the game (Im having issues with Python seeing just End as End\n so just trust it'll be for error code later or smth)
  * 
  */
 

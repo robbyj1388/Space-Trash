@@ -205,7 +205,7 @@ public class MainGame extends Application {
 
     public void stop() {
         System.out.println("PROGRAM STOPPING");
-        logger.logEntry(getGameTime(), "End");
+        logger.logEntry(getGameTime(), "End 0");
         logger.close();
     }
     /**
