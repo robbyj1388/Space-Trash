@@ -1,7 +1,3 @@
-/**
- * This is a tempory Logger.java, im waiting on Nathan to give me a finalized optimized one -Noah
- */
-
 package com.example;
 
 import java.io.PrintWriter;
@@ -12,17 +8,33 @@ public class Logger {
     File logFile = new File("log" + System.currentTimeMillis() + ".txt");
     PrintWriter writer;
 
-    public void logEntry(String entry) {
+    /**
+    * Logs an entry to the log file with a timestamp.
+    * @param time The time a given event occurs.  Use gameTime variable, or use -1 if time has no impact on the event.
+    * @param entry The event being logged.
+    */
+    public void logEntry(String time, String entry) {
         try {
             if (writer == null) {
                 writer = new PrintWriter(logFile);
             }
-            //TODO: replace currentTimeMillis with current game time
-            writer.println(System.currentTimeMillis() + ": " + entry);;
+
+            if (time.equals("-1")) {
+                writer.println(entry);
+            } else {
+                writer.println(time + ": " + entry);
+            }
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Closes the PrintWriter.
+     */
+    public void close() {
+        writer.close();
     }
 }
 
