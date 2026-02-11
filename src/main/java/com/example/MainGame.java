@@ -1,5 +1,6 @@
 package com.example;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,11 +56,14 @@ public class MainGame extends Application {
     
     public Logger logger = new Logger();
 
+    public int meteorsIDs = 0; // The last meteor made 
+
     enum gameState {
         menu, game, end, intermission
     }
     gameState state = gameState.menu;
 
+    private Stage stage;
 
 
 
@@ -69,15 +73,17 @@ public class MainGame extends Application {
      */
     @Override
     public void start(Stage stage) {
-        logger.logEntry("-1", "Logger is currently incomplete.  Delete this file if you see this line.");
+        
+        
         server.start(); // Start the hand tracking server
 
         root = new Pane();
         Scene scene = new Scene(root, 960, 540, Color.BLACK);
-
+        
         stage.setTitle("Space Trash");
         stage.setScene(scene);
         stage.show();
+        this.stage = stage; //Look into a better way to save stage
 
         // Focus handling
         root.requestFocus();
@@ -172,9 +178,14 @@ public class MainGame extends Application {
             }
         };
         gameLoop.start();
-        gameTime = 0;
-        logger.logEntry(Double.toString(gameTime), "Game started.");
+        this.gameTime = 0;
+        logger.logEntry(getGameTime(), "Game started.");
 
+        // The timeline that runs the hand logger, lower value if want more "precision"
+        Timeline handLogger = new Timeline( new KeyFrame(
+            Duration.seconds(0.1), e -> logPositions()));
+        handLogger.setCycleCount(Timeline.INDEFINITE);
+        handLogger.play();
         // Spawn meteors periodically
         Timeline meteorSpawner = new Timeline(new KeyFrame(
                 Duration.seconds(1), e -> spawnMeteor(scene.getWidth())));
@@ -194,7 +205,7 @@ public class MainGame extends Application {
 
     public void stop() {
         System.out.println("PROGRAM STOPPING");
-        logger.logEntry(Double.toString(gameTime), "Program stopped");
+        logger.logEntry(getGameTime(), "End");
         logger.close();
     }
     /**
@@ -290,26 +301,35 @@ public class MainGame extends Application {
         int speedIncrease = (int) (gameTime / 10); // Speed increases by 1 every 10 seconds
         int velocity = baseVelocity + speedIncrease;
 
-        Meteor meteor = new Meteor(velocity, 0, color);
+        Meteor meteor = new Meteor(velocity, 0, color, meteorsIDs);
+        meteorsIDs++; //just incrementing by one ensures no duplicate IDs
 
         double randomX = random.nextDouble() * Math.max(0, sceneWidth - 20);
         meteor.setPosition(randomX, -meteor.getShape().getBoundsInLocal().getHeight());
 
         root.getChildren().add(meteor.getShape());
         meteors.add(meteor);
-        logger.logEntry(Double.toString(gameTime), "Meteor spawn at " + randomX + " " + velocity); //Maybe give them an ID so the log watcher can track
+        //                                          X position      Velocity        ID
+        logger.logEntry(getGameTime(), "MeSpawn " + randomX + " " + velocity + " " + meteor.getID() + " " + meteor.getShapeName()); //Maybe give them an ID so the log watcher can track
         // Remove meteor if it goes off screen
         meteor.getShape().translateYProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() > root.getHeight() + 200 || newValue.doubleValue() < -400) {
                 root.getChildren().remove(meteor.getShape());
                 meteors.remove(meteor);
-                logger.logEntry(Double.toString(gameTime), "Meteor removed");
+                logger.logEntry(Double.toString(gameTime), "MeRemove");
             }
         });
     }
 
-    public double getGameTime() {
-        return ((double)Math.round(gameTime*100))/100;
+    /**
+     * Logs the paddle positions every few frames
+     */
+    public void logPositions() {
+        logger.logEntry(getGameTime(), "LeftPaddle " + Double.toString(leftPaddle.getX()) + " " + Double.toString(leftPaddle.getY()));
+        logger.logEntry(getGameTime(), "RightPaddle " + Double.toString(rightPaddle.getX()) + " " + Double.toString(rightPaddle.getY()));
+    }
+    public String getGameTime() {
+        return Double.toString(((double)Math.round(gameTime*1000))/1000);
     }
     /**
      * Goes through every UI element that needs realigned based on window resize
@@ -331,12 +351,13 @@ public class MainGame extends Application {
                 {
                     meteor.setCollided(true);
                     meteor.deflect();
-                    logger.logEntry(Double.toString(gameTime), "Meteor hit"); //add ID
+                    //Please leave logged entries short and one word, makes it easier for multiple reasons
+                    logger.logEntry(getGameTime(), "MeDeflect " + meteor.getID()); //add ID 
                     // Update score if meteor is circle or square
                     String shapeName = meteor.getShapeName();
                     if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
                         score++;
-                        logger.logEntry(Double.toString(gameTime), "Score increased to " + score);
+                        logger.logEntry(getGameTime(), "Score increased to " + score);
                     }
                     scoreText.setText("Score: " + score);
                 }
@@ -400,7 +421,12 @@ public class MainGame extends Application {
         }
         //Entering GAME state
         if( (x == gameState.game) && (getState() != x)) {
+            meteorsIDs = 0;
             gameDuration = 60; 
+            gameTime = 0;
+            logger.newLog(); //Starts up new logs
+            logger.logEntry("-1", "Logger is currently incomplete.  Delete this file if you see this line.");
+            logger.logEntry("-1", "Resolution " + Double.toString(stage.getWidth()) + " " + Double.toString(stage.getHeight()));
         }
         this.state = x;
     }

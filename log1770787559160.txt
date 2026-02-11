@@ -1,0 +1,468 @@
+-1: Logger is currently incomplete.  Delete this file if you see this line.
+-1: Resolution 968.0 576.0
+0.059: LeftPaddle 414.0 -12.0
+0.059: RightPaddle 3.484065321572138E-229 2.3997388694502056E-229
+0.158: LeftPaddle 555.0 -12.0
+0.158: RightPaddle 9.712156623927117E-234 6.689495633827373E-234
+0.258: LeftPaddle 687.0 114.0
+0.258: RightPaddle 5.2878010302348666E-238 3.642107852457701E-238
+0.359: LeftPaddle 825.0 252.0
+0.359: RightPaddle 1.8425297411843042E-242 1.269089362550418E-242
+0.458: LeftPaddle 813.0 387.0
+0.458: RightPaddle 8.025348882590966E-247 5.527663771172369E-247
+0.556: LeftPaddle 678.0 513.0
+0.556: RightPaddle 3.4955324328119845E-251 2.407637134844997E-251
+0.658: LeftPaddle 558.0 492.0
+0.658: RightPaddle 4.646359569867846E-255 3.200298683327351E-255
+0.658: MeSpawn 808.5857857061501 3 0 polygon
+0.759: LeftPaddle 447.0 381.0
+0.759: RightPaddle 1.206263909912403E-258 8.308450399906875E-259
+0.859: LeftPaddle 492.0 234.0
+0.859: RightPaddle 2.1520467277711832E-263 1.4822770829036242E-263
+0.959: LeftPaddle 633.0 219.0
+0.959: RightPaddle 5.999030716419593E-268 4.1319854424318727E-268
+1.059: LeftPaddle 783.0 324.0
+1.059: RightPaddle 8.562102748482046E-273 5.897366689005506E-273
+1.157: LeftPaddle 912.0 399.0
+1.157: RightPaddle 1.2220241392482356E-277 8.417002999924097E-278
+1.257: LeftPaddle 912.0 288.0
+1.257: RightPaddle 5.322665811685276E-282 3.6661218600893595E-282
+1.359: LeftPaddle 768.0 144.0
+1.359: RightPaddle 1.1869941404332355E-286 8.175724946861598E-287
+1.457: LeftPaddle 711.0 108.0
+1.457: RightPaddle 3.308856734743807E-291 2.2790594856653865E-291
+1.559: LeftPaddle 810.0 108.0
+1.559: RightPaddle 1.1529682959369327E-295 7.941363262830939E-296
+1.655: LeftPaddle 867.0 108.0
+1.655: RightPaddle 6.277356491619528E-300 4.3236894202481584E-300
+1.655: MeSpawn 766.6466905591692 5 1 rectangle
+1.759: LeftPaddle 867.0 165.0
+1.759: RightPaddle 1.7498715954993654E-304 1.2052687009817101E-304
+1.857: LeftPaddle 753.0 303.0
+1.857: RightPaddle 6.097412590840253E-309 4.1997484681808E-309
+1.958: LeftPaddle 612.0 444.0
+1.958: RightPaddle 1.35976844557E-313 9.365752049E-314
+2.059: LeftPaddle 612.0 384.0
+2.059: RightPaddle 3.79048E-318 2.61079E-318
+2.159: LeftPaddle 720.0 243.0
+2.159: RightPaddle 1.1E-322 6.9E-323
+2.255: LeftPaddle 780.0 183.0
+2.255: RightPaddle 9.9E-324 9.9E-324
+2.255: MeDeflect 1
+2.348: LeftPaddle 780.0 183.0
+2.348: RightPaddle 9.9E-324 9.9E-324
+2.458: LeftPaddle 750.0 213.0
+2.458: RightPaddle 9.9E-324 9.9E-324
+2.558: LeftPaddle 738.0 357.0
+2.558: RightPaddle 9.9E-324 9.9E-324
+2.655: LeftPaddle 738.0 360.0
+2.655: RightPaddle 9.9E-324 9.9E-324
+2.655: MeSpawn 772.4167880735481 3 2 square
+2.758: LeftPaddle 738.0 252.0
+2.758: RightPaddle 9.9E-324 9.9E-324
+2.857: LeftPaddle 738.0 111.0
+2.857: RightPaddle 9.9E-324 9.9E-324
+2.916: MeDeflect 2
+2.916: Score increased to 1
+2.959: LeftPaddle 738.0 -12.0
+2.959: RightPaddle 9.9E-324 9.9E-324
+3.058: LeftPaddle 642.0 -12.0
+3.058: RightPaddle 9.9E-324 9.9E-324
+3.151: LeftPaddle 642.0 -12.0
+3.151: RightPaddle 9.9E-324 9.9E-324
+3.258: LeftPaddle 774.0 69.0
+3.258: RightPaddle 9.9E-324 9.9E-324
+3.357: LeftPaddle 762.0 207.0
+3.357: RightPaddle 9.9E-324 9.9E-324
+3.458: LeftPaddle 627.0 318.0
+3.458: RightPaddle 9.9E-324 9.9E-324
+3.559: LeftPaddle 486.0 318.0
+3.559: RightPaddle 9.9E-324 9.9E-324
+3.658: LeftPaddle 372.0 207.0
+3.658: RightPaddle 9.9E-324 9.9E-324
+3.658: MeSpawn 608.5785085740232 5 3 circle
+3.759: LeftPaddle 372.0 81.0
+3.759: RightPaddle 9.9E-324 9.9E-324
+3.858: LeftPaddle 486.0 75.0
+3.858: RightPaddle 9.9E-324 9.9E-324
+3.959: LeftPaddle 576.0 168.0
+3.959: RightPaddle 9.9E-324 9.9E-324
+4.05: LeftPaddle 540.0 261.0
+4.05: RightPaddle 9.9E-324 9.9E-324
+4.159: LeftPaddle 540.0 240.0
+4.159: RightPaddle 9.9E-324 9.9E-324
+4.257: LeftPaddle 540.0 111.0
+4.257: RightPaddle 9.9E-324 9.9E-324
+4.355: LeftPaddle 540.0 63.0
+4.355: RightPaddle 9.9E-324 9.9E-324
+4.458: LeftPaddle 564.0 162.0
+4.458: RightPaddle 9.9E-324 9.9E-324
+4.497: MeDeflect 3
+4.497: Score increased to 2
+4.558: LeftPaddle 663.0 288.0
+4.558: RightPaddle 9.9E-324 9.9E-324
+4.658: LeftPaddle 663.0 360.0
+4.658: RightPaddle 9.9E-324 9.9E-324
+4.658: MeSpawn 771.2622568685736 2 4 circle
+4.759: LeftPaddle 633.0 360.0
+4.759: RightPaddle 9.9E-324 9.9E-324
+4.857: LeftPaddle 501.0 360.0
+4.857: RightPaddle 9.9E-324 9.9E-324
+4.957: LeftPaddle 363.0 222.0
+4.957: RightPaddle 9.9E-324 9.9E-324
+5.059: LeftPaddle 231.0 90.0
+5.059: RightPaddle 9.9E-324 9.9E-324
+5.159: LeftPaddle 144.0 39.0
+5.159: RightPaddle 9.9E-324 9.9E-324
+5.258: LeftPaddle 198.0 39.0
+5.258: RightPaddle 9.9E-324 9.9E-324
+5.357: LeftPaddle 333.0 39.0
+5.357: RightPaddle 9.9E-324 9.9E-324
+5.458: LeftPaddle 471.0 39.0
+5.458: RightPaddle 9.9E-324 9.9E-324
+5.557: LeftPaddle 600.0 39.0
+5.557: RightPaddle 9.9E-324 9.9E-324
+5.657: LeftPaddle 738.0 39.0
+5.657: RightPaddle 9.9E-324 9.9E-324
+5.657: MeSpawn 508.25717446410226 4 5 circle
+5.758: LeftPaddle 825.0 114.0
+5.758: RightPaddle 9.9E-324 9.9E-324
+5.858: LeftPaddle 702.0 222.0
+5.858: RightPaddle 9.9E-324 9.9E-324
+5.958: LeftPaddle 669.0 222.0
+5.958: RightPaddle 9.9E-324 9.9E-324
+6.057: LeftPaddle 678.0 162.0
+6.057: RightPaddle 9.9E-324 9.9E-324
+6.098: MeDeflect 4
+6.098: Score increased to 3
+6.157: LeftPaddle 813.0 162.0
+6.157: RightPaddle 9.9E-324 9.9E-324
+6.25: LeftPaddle 813.0 162.0
+6.25: RightPaddle 9.9E-324 9.9E-324
+6.358: LeftPaddle 726.0 249.0
+6.358: RightPaddle 9.9E-324 9.9E-324
+6.458: LeftPaddle 600.0 315.0
+6.458: RightPaddle 9.9E-324 9.9E-324
+6.559: LeftPaddle 600.0 315.0
+6.559: RightPaddle 9.9E-324 9.9E-324
+6.657: LeftPaddle 600.0 219.0
+6.657: RightPaddle 9.9E-324 9.9E-324
+6.657: MeSpawn 634.5989292603183 3 6 polygon
+6.753: LeftPaddle 600.0 219.0
+6.753: RightPaddle 9.9E-324 9.9E-324
+6.857: LeftPaddle 504.0 333.0
+6.857: RightPaddle 9.9E-324 9.9E-324
+6.958: LeftPaddle 504.0 390.0
+6.958: RightPaddle 9.9E-324 9.9E-324
+7.058: LeftPaddle 504.0 390.0
+7.058: RightPaddle 9.9E-324 9.9E-324
+7.114: MeDeflect 5
+7.114: Score increased to 4
+7.15: LeftPaddle 504.0 300.0
+7.15: RightPaddle 9.9E-324 9.9E-324
+7.259: LeftPaddle 486.0 303.0
+7.259: RightPaddle 9.9E-324 9.9E-324
+7.355: LeftPaddle 345.0 444.0
+7.355: RightPaddle 9.9E-324 9.9E-324
+7.458: LeftPaddle 483.0 489.0
+7.458: RightPaddle 9.9E-324 9.9E-324
+7.558: LeftPaddle 627.0 411.0
+7.558: RightPaddle 9.9E-324 9.9E-324
+7.659: LeftPaddle 687.0 267.0
+7.659: RightPaddle 9.9E-324 9.9E-324
+7.659: MeSpawn 491.5946355310225 2 7 square
+7.756: LeftPaddle 636.0 177.0
+7.756: RightPaddle 9.9E-324 9.9E-324
+7.859: LeftPaddle 594.0 189.0
+7.859: RightPaddle 9.9E-324 9.9E-324
+7.879: MeDeflect 6
+7.958: LeftPaddle 690.0 330.0
+7.958: RightPaddle 9.9E-324 9.9E-324
+8.05: LeftPaddle 795.0 342.0
+8.05: RightPaddle 9.9E-324 9.9E-324
+8.158: LeftPaddle 792.0 342.0
+8.158: RightPaddle 9.9E-324 9.9E-324
+8.258: LeftPaddle 651.0 276.0
+8.258: RightPaddle 9.9E-324 9.9E-324
+8.357: LeftPaddle 519.0 144.0
+8.357: RightPaddle 9.9E-324 9.9E-324
+8.398: MeDeflect 7
+8.398: Score increased to 5
+8.457: LeftPaddle 384.0 9.0
+8.457: RightPaddle 9.9E-324 9.9E-324
+8.559: LeftPaddle 384.0 9.0
+8.559: RightPaddle 9.9E-324 9.9E-324
+8.655: LeftPaddle 435.0 111.0
+8.655: RightPaddle 9.9E-324 9.9E-324
+8.655: MeSpawn 717.7184502017604 3 8 square
+8.758: LeftPaddle 573.0 168.0
+8.758: RightPaddle 9.9E-324 9.9E-324
+8.857: LeftPaddle 690.0 111.0
+8.857: RightPaddle 9.9E-324 9.9E-324
+8.958: LeftPaddle 663.0 -12.0
+8.958: RightPaddle 9.9E-324 9.9E-324
+9.057: LeftPaddle 525.0 -12.0
+9.057: RightPaddle 9.9E-324 9.9E-324
+9.158: LeftPaddle 666.0 -12.0
+9.158: RightPaddle 9.9E-324 9.9E-324
+9.258: LeftPaddle 684.0 99.0
+9.258: RightPaddle 9.9E-324 9.9E-324
+9.258: MeDeflect 8
+9.258: Score increased to 6
+9.358: LeftPaddle 537.0 201.0
+9.358: RightPaddle 9.9E-324 9.9E-324
+9.458: LeftPaddle 522.0 201.0
+9.458: RightPaddle 9.9E-324 9.9E-324
+9.558: LeftPaddle 531.0 201.0
+9.558: RightPaddle 9.9E-324 9.9E-324
+9.657: LeftPaddle 672.0 126.0
+9.657: RightPaddle 9.9E-324 9.9E-324
+9.659: MeSpawn 800.9849653271197 5 9 rectangle
+9.758: LeftPaddle 735.0 -9.0
+9.758: RightPaddle 9.9E-324 9.9E-324
+9.859: LeftPaddle 594.0 -12.0
+9.859: RightPaddle 9.9E-324 9.9E-324
+9.958: LeftPaddle 456.0 57.0
+9.958: RightPaddle 9.9E-324 9.9E-324
+10.057: LeftPaddle 465.0 168.0
+10.057: RightPaddle 9.9E-324 9.9E-324
+10.157: LeftPaddle 612.0 168.0
+10.157: RightPaddle 9.9E-324 9.9E-324
+10.248: LeftPaddle 681.0 168.0
+10.248: RightPaddle 9.9E-324 9.9E-324
+10.359: LeftPaddle 771.0 168.0
+10.359: RightPaddle 9.9E-324 9.9E-324
+10.459: LeftPaddle 882.0 252.0
+10.459: RightPaddle 9.9E-324 9.9E-324
+10.558: LeftPaddle 831.0 393.0
+10.558: RightPaddle 9.9E-324 9.9E-324
+10.656: LeftPaddle 714.0 393.0
+10.656: RightPaddle 9.9E-324 9.9E-324
+10.656: MeSpawn 917.6813526115022 4 10 circle
+10.758: LeftPaddle 714.0 393.0
+10.758: RightPaddle 9.9E-324 9.9E-324
+10.857: LeftPaddle 759.0 393.0
+10.857: RightPaddle 9.9E-324 9.9E-324
+10.939: MeDeflect 9
+10.957: LeftPaddle 759.0 393.0
+10.957: RightPaddle 9.9E-324 9.9E-324
+11.057: LeftPaddle 759.0 393.0
+11.057: RightPaddle 9.9E-324 9.9E-324
+11.157: LeftPaddle 807.0 393.0
+11.157: RightPaddle 9.9E-324 9.9E-324
+11.259: LeftPaddle 912.0 276.0
+11.259: RightPaddle 9.9E-324 9.9E-324
+11.359: LeftPaddle 912.0 135.0
+11.359: RightPaddle 9.9E-324 9.9E-324
+11.359: MeDeflect 10
+11.359: Score increased to 7
+11.457: LeftPaddle 912.0 126.0
+11.457: RightPaddle 9.9E-324 9.9E-324
+11.558: LeftPaddle 909.0 225.0
+11.558: RightPaddle 9.9E-324 9.9E-324
+11.657: LeftPaddle 762.0 372.0
+11.657: RightPaddle 9.9E-324 9.9E-324
+11.657: MeSpawn 371.9129544463726 3 11 polygon
+11.758: LeftPaddle 621.0 390.0
+11.758: RightPaddle 9.9E-324 9.9E-324
+11.859: LeftPaddle 498.0 270.0
+11.859: RightPaddle 9.9E-324 9.9E-324
+11.958: LeftPaddle 642.0 219.0
+11.958: RightPaddle 9.9E-324 9.9E-324
+12.059: LeftPaddle 606.0 219.0
+12.059: RightPaddle 9.9E-324 9.9E-324
+12.155: LeftPaddle 459.0 318.0
+12.155: RightPaddle 9.9E-324 9.9E-324
+12.258: LeftPaddle 309.0 408.0
+12.258: RightPaddle 9.9E-324 9.9E-324
+12.358: LeftPaddle 309.0 390.0
+12.358: RightPaddle 9.9E-324 9.9E-324
+12.458: LeftPaddle 387.0 321.0
+12.458: RightPaddle 9.9E-324 9.9E-324
+12.558: LeftPaddle 444.0 321.0
+12.558: RightPaddle 9.9E-324 9.9E-324
+12.657: LeftPaddle 414.0 321.0
+12.657: RightPaddle 9.9E-324 9.9E-324
+12.657: MeSpawn 298.21393243959017 3 12 polygon
+12.758: LeftPaddle 276.0 234.0
+12.758: RightPaddle 9.9E-324 9.9E-324
+12.85: LeftPaddle 276.0 153.0
+12.85: RightPaddle 9.9E-324 9.9E-324
+12.958: LeftPaddle 297.0 153.0
+12.958: RightPaddle 9.9E-324 9.9E-324
+13.059: LeftPaddle 336.0 258.0
+13.059: RightPaddle 9.9E-324 9.9E-324
+13.059: MeDeflect 11
+13.153: LeftPaddle 336.0 291.0
+13.153: RightPaddle 9.9E-324 9.9E-324
+13.25: LeftPaddle 336.0 291.0
+13.25: RightPaddle 9.9E-324 9.9E-324
+13.359: LeftPaddle 306.0 219.0
+13.359: RightPaddle 9.9E-324 9.9E-324
+13.458: LeftPaddle 198.0 126.0
+13.458: RightPaddle 9.9E-324 9.9E-324
+13.554: LeftPaddle 198.0 126.0
+13.554: RightPaddle 9.9E-324 9.9E-324
+13.659: LeftPaddle 315.0 126.0
+13.659: RightPaddle 9.9E-324 9.9E-324
+13.659: MeSpawn 330.1792174387805 6 13 square
+13.747: LeftPaddle 333.0 198.0
+13.747: RightPaddle 9.9E-324 9.9E-324
+13.859: LeftPaddle 333.0 198.0
+13.859: RightPaddle 9.9E-324 9.9E-324
+13.959: LeftPaddle 270.0 198.0
+13.959: RightPaddle 9.9E-324 9.9E-324
+14.05: LeftPaddle 246.0 198.0
+14.05: RightPaddle 9.9E-324 9.9E-324
+14.158: LeftPaddle 357.0 198.0
+14.158: RightPaddle 9.9E-324 9.9E-324
+14.258: LeftPaddle 357.0 198.0
+14.258: RightPaddle 9.9E-324 9.9E-324
+14.355: LeftPaddle 357.0 198.0
+14.355: RightPaddle 9.9E-324 9.9E-324
+14.459: LeftPaddle 336.0 198.0
+14.459: RightPaddle 9.9E-324 9.9E-324
+14.558: LeftPaddle 234.0 249.0
+14.558: RightPaddle 9.9E-324 9.9E-324
+14.659: LeftPaddle 234.0 387.0
+14.659: RightPaddle 9.9E-324 9.9E-324
+14.659: MeSpawn 805.3894670018191 5 14 rectangle
+14.759: LeftPaddle 300.0 414.0
+14.759: RightPaddle 9.9E-324 9.9E-324
+14.778: MeDeflect 13
+14.778: Score increased to 8
+14.859: LeftPaddle 333.0 414.0
+14.859: RightPaddle 9.9E-324 9.9E-324
+14.953: LeftPaddle 333.0 414.0
+14.953: RightPaddle 9.9E-324 9.9E-324
+15.051: LeftPaddle 333.0 414.0
+15.051: RightPaddle 9.9E-324 9.9E-324
+15.157: LeftPaddle 378.0 414.0
+15.157: RightPaddle 9.9E-324 9.9E-324
+15.258: LeftPaddle 519.0 414.0
+15.258: RightPaddle 9.9E-324 9.9E-324
+15.359: LeftPaddle 660.0 414.0
+15.359: RightPaddle 9.9E-324 9.9E-324
+15.457: LeftPaddle 723.0 291.0
+15.457: RightPaddle 9.9E-324 9.9E-324
+15.559: LeftPaddle 723.0 231.0
+15.559: RightPaddle 9.9E-324 9.9E-324
+15.658: LeftPaddle 753.0 231.0
+15.658: RightPaddle 9.9E-324 9.9E-324
+15.658: MeSpawn 141.6230592027449 4 15 circle
+15.757: LeftPaddle 855.0 294.0
+15.757: RightPaddle 9.9E-324 9.9E-324
+15.858: LeftPaddle 813.0 438.0
+15.858: RightPaddle 9.9E-324 9.9E-324
+15.958: LeftPaddle 669.0 459.0
+15.958: RightPaddle 9.9E-324 9.9E-324
+16.056: LeftPaddle 522.0 459.0
+16.056: RightPaddle 9.9E-324 9.9E-324
+16.158: LeftPaddle 375.0 459.0
+16.158: RightPaddle 9.9E-324 9.9E-324
+16.258: LeftPaddle 231.0 354.0
+16.258: RightPaddle 9.9E-324 9.9E-324
+16.359: LeftPaddle 81.0 204.0
+16.359: RightPaddle 9.9E-324 9.9E-324
+16.458: LeftPaddle 72.0 126.0
+16.458: RightPaddle 9.9E-324 9.9E-324
+16.558: LeftPaddle 114.0 126.0
+16.558: RightPaddle 9.9E-324 9.9E-324
+16.639: MeDeflect 15
+16.639: Score increased to 9
+16.658: LeftPaddle 129.0 234.0
+16.658: RightPaddle 9.9E-324 9.9E-324
+16.658: MeSpawn 191.28981710451217 4 16 square
+16.759: LeftPaddle 0.0 396.0
+16.759: RightPaddle 9.9E-324 9.9E-324
+16.859: LeftPaddle 0.0 396.0
+16.859: RightPaddle 9.9E-324 9.9E-324
+16.955: LeftPaddle 105.0 396.0
+16.955: RightPaddle 9.9E-324 9.9E-324
+17.058: LeftPaddle 219.0 315.0
+17.058: RightPaddle 9.9E-324 9.9E-324
+17.159: LeftPaddle 219.0 171.0
+17.159: RightPaddle 9.9E-324 9.9E-324
+17.25: LeftPaddle 216.0 171.0
+17.25: RightPaddle 9.9E-324 9.9E-324
+17.359: LeftPaddle 216.0 171.0
+17.359: RightPaddle 9.9E-324 9.9E-324
+17.457: LeftPaddle 216.0 171.0
+17.457: RightPaddle 9.9E-324 9.9E-324
+17.553: LeftPaddle 216.0 171.0
+17.553: RightPaddle 9.9E-324 9.9E-324
+17.65: LeftPaddle 216.0 171.0
+17.65: RightPaddle 9.9E-324 9.9E-324
+17.65: MeSpawn 184.0817798278017 4 17 square
+17.758: LeftPaddle 204.0 270.0
+17.758: RightPaddle 9.9E-324 9.9E-324
+17.758: MeDeflect 16
+17.758: Score increased to 10
+17.857: LeftPaddle 75.0 345.0
+17.857: RightPaddle 9.9E-324 9.9E-324
+17.953: LeftPaddle 75.0 345.0
+17.953: RightPaddle 9.9E-324 9.9E-324
+18.049: LeftPaddle 75.0 345.0
+18.049: RightPaddle 9.9E-324 9.9E-324
+18.146: LeftPaddle 75.0 345.0
+18.146: RightPaddle 9.9E-324 9.9E-324
+18.259: LeftPaddle 219.0 345.0
+18.259: RightPaddle 9.9E-324 9.9E-324
+18.359: LeftPaddle 225.0 309.0
+18.359: RightPaddle 9.9E-324 9.9E-324
+18.45: LeftPaddle 225.0 225.0
+18.45: RightPaddle 9.9E-324 9.9E-324
+18.548: LeftPaddle 225.0 225.0
+18.548: RightPaddle 9.9E-324 9.9E-324
+18.577: MeDeflect 17
+18.577: Score increased to 11
+18.657: LeftPaddle 117.0 225.0
+18.657: RightPaddle 9.9E-324 9.9E-324
+18.657: MeSpawn 137.32925446635457 6 18 circle
+18.756: LeftPaddle 117.0 225.0
+18.756: RightPaddle 9.9E-324 9.9E-324
+18.856: LeftPaddle 117.0 234.0
+18.856: RightPaddle 9.9E-324 9.9E-324
+18.947: LeftPaddle 117.0 234.0
+18.947: RightPaddle 9.9E-324 9.9E-324
+19.059: LeftPaddle 117.0 351.0
+19.059: RightPaddle 9.9E-324 9.9E-324
+19.155: LeftPaddle 117.0 393.0
+19.155: RightPaddle 9.9E-324 9.9E-324
+19.257: LeftPaddle 117.0 342.0
+19.257: RightPaddle 9.9E-324 9.9E-324
+19.337: MeDeflect 18
+19.337: Score increased to 12
+19.359: LeftPaddle 117.0 225.0
+19.359: RightPaddle 9.9E-324 9.9E-324
+19.459: LeftPaddle 117.0 225.0
+19.459: RightPaddle 9.9E-324 9.9E-324
+19.559: LeftPaddle 117.0 225.0
+19.559: RightPaddle 9.9E-324 9.9E-324
+19.658: LeftPaddle 117.0 312.0
+19.658: RightPaddle 9.9E-324 9.9E-324
+19.658: MeSpawn 143.82018435831415 6 19 polygon
+19.759: LeftPaddle 117.0 441.0
+19.759: RightPaddle 9.9E-324 9.9E-324
+19.857: LeftPaddle 117.0 444.0
+19.857: RightPaddle 9.9E-324 9.9E-324
+19.958: LeftPaddle 117.0 444.0
+19.958: RightPaddle 9.9E-324 9.9E-324
+20.058: LeftPaddle 117.0 444.0
+20.058: RightPaddle 9.9E-324 9.9E-324
+20.153: LeftPaddle 117.0 444.0
+20.153: RightPaddle 9.9E-324 9.9E-324
+20.249: LeftPaddle 117.0 444.0
+20.249: RightPaddle 9.9E-324 9.9E-324
+20.359: LeftPaddle 117.0 444.0
+20.359: RightPaddle 9.9E-324 9.9E-324
+20.457: LeftPaddle 117.0 444.0
+20.457: RightPaddle 9.9E-324 9.9E-324
+20.558: LeftPaddle 117.0 444.0
+20.558: RightPaddle 9.9E-324 9.9E-324
+20.658: LeftPaddle 117.0 444.0
+20.658: RightPaddle 9.9E-324 9.9E-324
+20.658: MeSpawn 672.5119948258847 4 20 square
+20.753: LeftPaddle 117.0 444.0
+20.753: RightPaddle 9.9E-324 9.9E-324
+20.848: end
