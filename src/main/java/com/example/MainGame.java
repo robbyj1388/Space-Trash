@@ -367,7 +367,7 @@ public class MainGame extends Application {
                     String shapeName = meteor.getShapeName();
                     if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
                         score++;
-                        logger.logEntry(getGameTime(), "Score increased to " + score);
+                        logger.logEntry(getGameTime(), "Score " + score);
                     }
                     scoreText.setText("Score: " + score);
                 }
