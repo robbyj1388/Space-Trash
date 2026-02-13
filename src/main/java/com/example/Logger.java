@@ -1,62 +1,71 @@
-/**
- * This is a tempory Logger.java, im waiting on Nathan to give me a finalized optimized one -Noah
- */
-
 package com.example;
 
-import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.File;
+
+/**
+ * Key terms for logging
+ * 
+ * PLEASE follow this formatting when writing logged events
+ * CMD arg0 arg1 arg2
+ * 
+ * 
+ * "Resolution width height" - What the window resolution is
+ * "LeftPaddle x y" - Where left paddle is
+ * "RightPaddle x y" - Where right paddle is
+ * "MeSpawn x velocity id shape" - Meteor Spawns 
+ * "MeDeflect id" Meteor deflect event
+ * "End 0" Ends the game (Im having issues with Python seeing just End as End\n so just trust it'll be for error code later or smth)
+ * 
+ */
+
 
 public class Logger {
-    List<String[]> log = new ArrayList<>();
-
+    File logFile = new File("log" + System.currentTimeMillis() + ".txt");
+    PrintWriter writer;
+    boolean log = false; //Sometimes a game isnt specifically running
     /**
-     * Key terms to remember
-     * leftPos, x, y: left paddle pos
-     * rightPos, x, y: right paddle pos
-     * resolution, w, h: The resolution of the display
+     * Starts up a new log file
      */
-
-    public Logger() {
-
+    public void newLog() {
+        close();
+        log = true;
+        logFile = new File("log" + System.currentTimeMillis() + ".txt");
     }
-    /**
-     * 
-     * @param time The current game time
-     * @param additionals Please follow this format "leftPos, 0.32, 0.53; rightPos, 0.21, 0.35"
-     */
-    public void log(double time, String[] additionals) {
-        String[] s = {Double.toString(time), String.join(",", additionals)};
 
-        log.add(s);
-    }
     /**
-     * Clears the logger file (i.e. new game)
-     */
-    public void clearLog() {
-        log.clear();
-    }
-    /**
-     * Writes the entire log file into the ./log/ directory
-     */
-    public void write() {
-        Date d = new Date();
-        String path = String.format("./log/log-%s.txt", Long.toString(d.getTime()));
-        try( FileWriter wrt = new FileWriter(path)) {
-            for(int i = 0; i < log.size(); i++ ) {
-                wrt.write(String.join(",", log.get(i)) + "\n");
+    * Logs an entry to the log file with a timestamp.
+    * @param time The time a given event occurs.  Use gameTime variable, or use -1 if time has no impact on the event.
+    * @param entry The event being logged.
+    */
+    public void logEntry(String time, String entry) {
+        if(!log) {
+            return;
+        }
+        try {
+            if (writer == null) {
+                writer = new PrintWriter(logFile);
             }
-            System.out.println("Successfully put log into log output at " + path);
-        }
-        catch(IOException er) {
-            System.out.println("ERROR WRITING LOG");
-            System.out.println(er);
-        }
 
+            //Im leaving -1 in just because it makes reading it simpler 
+            writer.println(time + ": " + entry);
+
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-}
+    /**
+     * Closes the PrintWriter.
+     */
+    public void close() {
+        if(writer != null) {
 
+            writer.flush();
+            log = false;
+            writer.close();
+        }
+    }
+}

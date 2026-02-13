@@ -22,7 +22,6 @@ public class AreaButton { //TODO: BUG: AreaButton doesnt actually get removed fr
     private Text text;
     private double timer = 0;
     private double end_timer = 60; //How long to hover on the button
-    private boolean enabled = false; //if the button is enabled
     Rectangle shape;
     Rectangle inner_shape;
     gameState toState; //Desired state when button used
@@ -35,6 +34,7 @@ public class AreaButton { //TODO: BUG: AreaButton doesnt actually get removed fr
         Rectangle rect = new Rectangle( x , y , size, size);
         Rectangle inner_rect = new Rectangle( x, y, size, size); // The overlay to showcase how close to be done
         rect.setStroke(Color.WHITE);
+        rect.setFill(Color.TRANSPARENT);
         inner_rect.setFill(Color.WHITE);
         rect.setArcHeight(size/4);
         rect.setArcWidth(size/4);
@@ -120,27 +120,7 @@ public class AreaButton { //TODO: BUG: AreaButton doesnt actually get removed fr
         inner_shape.relocate(x, y);
         text.relocate((x+size/2), y+size/2);
     }
-    /**
-     * Disables the Area Button
-     */
-    public void disable() {
-        enabled = false;
-    }
 
-    /**
-     * Enables the Area Button
-     */
-    public void enable() {
-        enabled = true;
-    }
-
-    /**
-     * Checks if the button is enabled
-     * @return boolaen enabled
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
 
 
 }

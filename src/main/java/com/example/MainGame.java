@@ -1,5 +1,6 @@
 package com.example;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,8 +39,10 @@ public class MainGame extends Application {
 
     private List<AreaButton> areaButtons = new ArrayList<>(); // List of active buttons
 
+    // The length of each game
+    private final double gameLength = 60;
 
-    private double gameDuration = 60; // How long until the game is over
+    private double gameDuration = gameLength; // How long until the game is over
     private double gameTime = 0; // Tracks how long the game has been running in seconds
 
     public static int score = 0;
@@ -56,11 +59,14 @@ public class MainGame extends Application {
     
     public Logger logger = new Logger();
 
+    public int meteorsIDs = 0; // The last meteor made 
+
     enum gameState {
         menu, game, end, intermission
     }
     gameState state = gameState.menu;
 
+    private Stage stage;
 
 
 
@@ -70,14 +76,17 @@ public class MainGame extends Application {
      */
     @Override
     public void start(Stage stage) {
+        
+        
         server.start(); // Start the hand tracking server
 
         root = new Pane();
         Scene scene = new Scene(root, 960, 540, Color.BLACK);
-
+        
         stage.setTitle("Space Trash");
         stage.setScene(scene);
         stage.show();
+        this.stage = stage; //Look into a better way to save stage
 
         // Focus handling
         root.requestFocus();
@@ -115,11 +124,9 @@ public class MainGame extends Application {
         interText.setTextOrigin(VPos.CENTER);
         interText.layoutXProperty().bind(scene.widthProperty().subtract(titleText.prefWidth(-1)).divide(2));
         interText.layoutYProperty().bind(scene.heightProperty().subtract(titleText.prefHeight(-1)).divide(2));
-
-
         
         root.getChildren().add(titleText);
-        
+
         startButton = new AreaButton((stage.getWidth()/2)-50, stage.getHeight()/2, 100.0, "START", gameState.intermission); //Creates the start button
         root.getChildren().add(startButton.getShape());
         root.getChildren().add(startButton.getInnerShape());
@@ -132,11 +139,6 @@ public class MainGame extends Application {
         // Keyboard input handling
         scene.setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
-
-
-        //sets up logger
-        logger.clearLog();
-        logger.log(0, new String[]{"resolution", Double.toString(stage.getWidth()), Double.toString(stage.getHeight())});
 
         // Game loop using AnimationTimer
         AnimationTimer gameLoop = new AnimationTimer() {
@@ -163,6 +165,9 @@ public class MainGame extends Application {
                 if(getState() == gameState.game) {
                     gameDuration -= 1*deltaTime;
                     durationText.setText("TIME LEFT: " + (int)gameDuration);
+                    if(gameDuration <= 0) {
+                        setState(gameState.menu);
+                    }
                 }
 
                 // Manual keyboard movement for paddles
@@ -176,23 +181,22 @@ public class MainGame extends Application {
                 if (pressedKeys.contains(KeyCode.LEFT)) rightPaddle.moveLeft();
                 if (pressedKeys.contains(KeyCode.RIGHT)) rightPaddle.moveRight(scene.getWidth());
                 windowResizeUI();
-                
-
             }
         };
         gameLoop.start();
+        this.gameTime = 0;
+        logger.logEntry(getGameTime(), "Game started.");
 
+        // The timeline that runs the hand logger, lower value if want more "precision"
+        Timeline handLogger = new Timeline( new KeyFrame(
+            Duration.seconds(0.05), e -> logPositions()));
+        handLogger.setCycleCount(Timeline.INDEFINITE);
+        handLogger.play();
         // Spawn meteors periodically
         Timeline meteorSpawner = new Timeline(new KeyFrame(
                 Duration.seconds(1), e -> spawnMeteor(scene.getWidth())));
         meteorSpawner.setCycleCount(Timeline.INDEFINITE);
         meteorSpawner.play();
-
-        // Grabs hand positions and logs them periodically
-        Timeline handLogger = new Timeline( new KeyFrame(
-                Duration.seconds(0.1), e -> logPositions()));
-        handLogger.setCycleCount(Timeline.INDEFINITE);
-        handLogger.play();
 
         // Check collisions frequently
         Timeline collisionChecker = new Timeline(new KeyFrame(
@@ -207,8 +211,8 @@ public class MainGame extends Application {
 
     public void stop() {
         System.out.println("PROGRAM STOPPING");
-        logger.log(getGameTime(), new String[]{"This is", "all a", "test"});
-        logger.write();
+        logger.logEntry(getGameTime(), "End 0");
+        logger.close();
     }
     /**
      * Updates the left paddle's position based on hand tracking input.
@@ -241,6 +245,10 @@ public class MainGame extends Application {
      * @param paddle the right paddle to update
      */
     private void updateRightPaddle(Paddle paddle) {
+        if(server.rx == 0.0) //TODO: Test if this works with hand tracking
+        {
+            return;
+        }
         double handX = server.rx;
         double handY = server.ry;
 
@@ -303,45 +311,41 @@ public class MainGame extends Application {
         int speedIncrease = (int) (gameTime / 10); // Speed increases by 1 every 10 seconds
         int velocity = baseVelocity + speedIncrease;
 
-        Meteor meteor = new Meteor(velocity, 0, color);
+        Meteor meteor = new Meteor(velocity, 0, color, meteorsIDs);
+        meteorsIDs++; //just incrementing by one ensures no duplicate IDs
 
         double randomX = random.nextDouble() * Math.max(0, sceneWidth - 20);
         meteor.setPosition(randomX, -meteor.getShape().getBoundsInLocal().getHeight());
 
         root.getChildren().add(meteor.getShape());
         meteors.add(meteor);
-
+        //                                          X position      Velocity        ID
+        logger.logEntry(getGameTime(), "MeSpawn " + randomX + " " + velocity + " " + meteor.getID() + " " + meteor.getShapeName()); //Maybe give them an ID so the log watcher can track
         // Remove meteor if it goes off screen
         meteor.getShape().translateYProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.doubleValue() > root.getHeight() + 200 || newValue.doubleValue() < -400) {
                 root.getChildren().remove(meteor.getShape());
                 meteors.remove(meteor);
+                logger.logEntry(Double.toString(gameTime), "MeRemove");
             }
         });
     }
 
-
-    /** 
-     * Logs the current hand positions inside two arraylists
+    /**
+     * Logs the paddle positions every few frames
      */
     public void logPositions() {
-        logger.log(getGameTime(), new String[]{"leftPos", Double.toString(leftPaddle.getX()), Double.toString(leftPaddle.getY())});
-        logger.log(getGameTime(), new String[]{"rightPos", Double.toString(rightPaddle.getX()), Double.toString(rightPaddle.getY())});
-        for (Meteor meteor : new ArrayList<>(meteors)) {
-            logger.log(getGameTime(), new String[]{"Meteor", Double.toString(meteor.getX()), Double.toString(meteor.getY()), meteor.getShape().toString()});
-        }
+        logger.logEntry(getGameTime(), "LeftPaddle " + Double.toString(leftPaddle.getX()) + " " + Double.toString(leftPaddle.getY()));
+        logger.logEntry(getGameTime(), "RightPaddle " + Double.toString(rightPaddle.getX()) + " " + Double.toString(rightPaddle.getY()));
     }
-
-    public double getGameTime() {
-        return ((double)Math.round(gameTime*100))/100;
+    public String getGameTime() {
+        return Double.toString(((double)Math.round(gameTime*1000))/1000);
     }
     /**
      * Goes through every UI element that needs realigned based on window resize
      */
     public void windowResizeUI() {
         startButton.setPos(root.getWidth()/2, root.getHeight()/2);
-        
-         
     }
 
     /**
@@ -357,11 +361,13 @@ public class MainGame extends Application {
                 {
                     meteor.setCollided(true);
                     meteor.deflect();
-
+                    //Please leave logged entries short and one word, makes it easier for multiple reasons
+                    logger.logEntry(getGameTime(), "MeDeflect " + meteor.getID()); //add ID 
                     // Update score if meteor is circle or square
                     String shapeName = meteor.getShapeName();
                     if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
                         score++;
+                        logger.logEntry(getGameTime(), "Score increased to " + score);
                     }
                     scoreText.setText("Score: " + score);
                 }
@@ -370,7 +376,7 @@ public class MainGame extends Application {
         for(AreaButton button : new ArrayList<>(areaButtons)) //Area buttons
         {
             if (button.getShape().getBoundsInParent().intersects(leftPaddle.getBoundsInParent())
-                    || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent()) && (button.isEnabled())) {
+                    || button.getShape().getBoundsInParent().intersects(rightPaddle.getBoundsInParent())) {
                         button.increment();
                 }
                 else
@@ -405,11 +411,11 @@ public class MainGame extends Application {
         if(x != gameState.menu) //menu elements
         {
             if(root.getChildren().contains(titleText)) {
-                startButton.disable();
                 root.getChildren().remove(titleText);
                 root.getChildren().remove(startButton.getShape()); 
                 root.getChildren().remove(startButton.getInnerShape());   
                 root.getChildren().remove(startButton.getText()); 
+                areaButtons.remove(startButton);
                 
             }        
         }
@@ -423,16 +429,30 @@ public class MainGame extends Application {
         if( (x == gameState.intermission) && (getState() != x) ) {
             root.getChildren().add(interText);
         }
+        
+        //Entering MENU state
+        if( x == gameState.menu ) {
+
+                root.getChildren().add(titleText);
+                root.getChildren().add(startButton.getShape()); 
+                root.getChildren().add(startButton.getInnerShape());   
+                root.getChildren().add(startButton.getText());   
+                areaButtons.add(startButton);
+        }
+
+
         //Entering GAME state
         if( (x == gameState.game) && (getState() != x)) {
-            gameDuration = 60; 
+            meteorsIDs = 0;
+            gameDuration = gameLength; 
+            score = 0;
+            gameTime = 0;
+            logger.newLog(); //Starts up new logs
+            logger.logEntry("-1", "Logger is currently incomplete.  Delete this file if you see this line.");
+            logger.logEntry("-1", "Resolution " + Double.toString(stage.getWidth()) + " " + Double.toString(stage.getHeight()));
         }
         this.state = x;
     }
-
-    
-    
-
 
     /**
      * Launches the JavaFX application.

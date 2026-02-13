@@ -22,7 +22,7 @@ public class Meteor {
     //private final Random randSlope = new Random(); // Randomizer for movement
     private Timeline timeline; // Animation timeline to simulate falling
     private boolean collided = false; //Checks if initially collided to prevent random incremental scores
-
+    int ID = 0;
     /**
      * Constructor for creating a meteor with random shape and size.
      * 
@@ -30,9 +30,10 @@ public class Meteor {
      * @param horizontalVelocity The horizontal speed for diagonal movement.
      * @param color              The color of the meteor.
      */
-    public Meteor(int velocity, int horizontalVelocity, Paint color) {
+    public Meteor(int velocity, int horizontalVelocity, Paint color, int ID) {
         this.velocity = velocity;
         this.dx = horizontalVelocity;
+        this.ID = ID;
 
         // Generate a random size within the specified range
         Double size = minSize + (maxSize - minSize) * randShape.nextDouble();
@@ -181,5 +182,12 @@ public class Meteor {
 
     public String getShapeName() {
         return shapeName;
+    }
+    /**
+     * Gets the ID
+     * @return ID
+     */
+    public int getID() {
+        return ID;
     }
 }
