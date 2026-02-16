@@ -161,9 +161,9 @@ public class MainGame extends Application {
                 if(getState() == gameState.game) {
                     gameDuration -= 1*deltaTime;
                     durationText.setText("TIME LEFT: " + (int)gameDuration);
-                    /*if (gameTime >= gameDuration) {
+                    if(gameDuration <= 0) {
                         setState(gameState.menu);
-                    }*/
+                    }
                 }
 
                 // Manual keyboard movement for paddles
@@ -181,11 +181,11 @@ public class MainGame extends Application {
         };
         gameLoop.start();
         this.gameTime = 0;
-        logger.logEntry("-1", "Game started.");
+        logger.logEntry(getGameTime(), "Game started.");
 
         // The timeline that runs the hand logger, lower value if want more "precision"
         Timeline handLogger = new Timeline( new KeyFrame(
-            Duration.seconds(0.1), e -> logPositions()));
+            Duration.seconds(1), e -> logPositions()));
         handLogger.setCycleCount(Timeline.INDEFINITE);
         handLogger.play();
         // Spawn meteors periodically
@@ -241,6 +241,10 @@ public class MainGame extends Application {
      * @param paddle the right paddle to update
      */
     private void updateRightPaddle(Paddle paddle) {
+        if(server.rx == 0.0) //TODO: Test if this works with hand tracking
+        {
+            return;
+        }
         double handX = server.rx;
         double handY = server.ry;
 
@@ -300,7 +304,7 @@ public class MainGame extends Application {
 
         // Base velocity + additional velocity based on elapsed game time
         int baseVelocity = 2 + random.nextInt(4);
-        int speedIncrease = (int) (gameTime / 25); // Speed increases by 1 every 25 seconds
+        int speedIncrease = (int) (gameTime / 10); // Speed increases by 1 every 10 seconds
         int velocity = baseVelocity + speedIncrease;
 
         Meteor meteor = new Meteor(velocity, 0, color, meteorsIDs);
@@ -330,7 +334,6 @@ public class MainGame extends Application {
         logger.logEntry(getGameTime(), "LeftPaddle " + Double.toString(leftPaddle.getX()) + " " + Double.toString(leftPaddle.getY()));
         logger.logEntry(getGameTime(), "RightPaddle " + Double.toString(rightPaddle.getX()) + " " + Double.toString(rightPaddle.getY()));
     }
-
     public String getGameTime() {
         return Double.toString(((double)Math.round(gameTime*1000))/1000);
     }
@@ -360,7 +363,7 @@ public class MainGame extends Application {
                     String shapeName = meteor.getShapeName();
                     if ("circle".equalsIgnoreCase(shapeName) || "square".equalsIgnoreCase(shapeName)) {
                         score++;
-                        logger.logEntry(getGameTime(), "Score increased to " + score);
+                        logger.logEntry(getGameTime(), "Score " + score);
                     }
                     scoreText.setText("Score: " + score);
                 }
@@ -409,6 +412,7 @@ public class MainGame extends Application {
                 root.getChildren().remove(startButton.getShape()); 
                 root.getChildren().remove(startButton.getInnerShape());   
                 root.getChildren().remove(startButton.getText()); 
+                areaButtons.remove(startButton);
                 
             }        
         }
@@ -422,10 +426,24 @@ public class MainGame extends Application {
         if( (x == gameState.intermission) && (getState() != x) ) {
             root.getChildren().add(interText);
         }
+        
+        //Entering MENU state
+        if( x == gameState.menu ) {
+
+                root.getChildren().add(titleText);
+                root.getChildren().add(startButton.getShape()); 
+                root.getChildren().add(startButton.getInnerShape());   
+                root.getChildren().add(startButton.getText());   
+                areaButtons.add(startButton);
+        }
+
+
         //Entering GAME state
         if( (x == gameState.game) && (getState() != x)) {
             meteorsIDs = 0;
-            gameDuration = 15; 
+            gameDuration = 15;
+            score = 0;
+
             gameTime = 0;
             logger.newLog(); //Starts up new logs
             logger.logEntry("-1", "Logger is currently incomplete.  Delete this file if you see this line.");
