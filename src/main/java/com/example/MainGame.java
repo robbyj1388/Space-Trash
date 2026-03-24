@@ -55,6 +55,9 @@ public class MainGame extends Application {
     private Text interText; //The text saying what to hit and what to avoid
     public double interTimer = 3; //How many seconds for the intermission
     
+    private Text endScoreText;
+    private double endTimer = 3;
+
     private AreaButton startButton; // The start button
     
     public Logger logger = new Logger();
@@ -98,14 +101,14 @@ public class MainGame extends Application {
         scoreText.setFont(Font.font(20));
         scoreText.setX(10);
         scoreText.setY(30);
-        root.getChildren().add(scoreText);
+        //root.getChildren().add(scoreText);
 
         durationText = new Text("TIME LEFT: 60");
         durationText.setFill(Color.WHITE);
         durationText.setFont(Font.font(20));
         durationText.setX(10);
         durationText.setY(60);
-        root.getChildren().add(durationText);
+        //root.getChildren().add(durationText);
 
         // Title
         titleText = new Text("SPACE TRASH");
@@ -125,6 +128,17 @@ public class MainGame extends Application {
         interText.layoutXProperty().bind(scene.widthProperty().subtract(titleText.prefWidth(-1)).divide(2));
         interText.layoutYProperty().bind(scene.heightProperty().subtract(titleText.prefHeight(-1)).divide(2));
         
+
+        // End Score Text
+        endScoreText = new Text("YOUR SCORE\n0");
+        endScoreText.setFill(Color.WHITE);
+        endScoreText.setTextAlignment(TextAlignment.CENTER);
+        endScoreText.setFont(Font.font(40));
+        endScoreText.setTextOrigin(VPos.CENTER);
+        endScoreText.layoutXProperty().bind(scene.widthProperty().subtract(endScoreText.prefWidth(-1)).divide(2));
+        endScoreText.layoutYProperty().bind(scene.heightProperty().subtract(endScoreText.prefHeight(-1)).divide(2));
+
+
         root.getChildren().add(titleText);
 
         startButton = new AreaButton((stage.getWidth()/2)-50, stage.getHeight()/2, 100.0, "START", gameState.intermission); //Creates the start button
@@ -156,18 +170,26 @@ public class MainGame extends Application {
                 updateLeftPaddle(leftPaddle);
                 updateRightPaddle(rightPaddle);
                 //TODO: This code is a bit messy
-                if(getState() == gameState.intermission) {
-                    interTimer -= 1*deltaTime;
-                    if(interTimer <= 0) {
-                        setState(gameState.game);
-                    }
-                }
-                if(getState() == gameState.game) {
-                    gameDuration -= 1*deltaTime;
-                    durationText.setText("TIME LEFT: " + (int)gameDuration);
-                    if(gameDuration <= 0) {
-                        setState(gameState.menu);
-                    }
+                switch(getState()) {
+                    case intermission:
+                        interTimer -= 1*deltaTime;
+                        if(interTimer <= 0) {
+                            setState(gameState.game);
+                        }
+                    break;
+                    case end:
+                        endTimer -= 1*deltaTime;
+                        if(endTimer <= 0) {
+                            setState(gameState.menu);
+                        }
+                    break;
+                    case game:
+                        gameDuration -= 1*deltaTime;
+                        durationText.setText("TIME LEFT: " + (int)gameDuration);
+                        if(gameDuration <= 0) {
+                            setState(gameState.end);
+                        }       
+                    break;
                 }
 
                 // Manual keyboard movement for paddles
@@ -385,6 +407,7 @@ public class MainGame extends Application {
                 }
                 if(button.getTimer() > 60)
                 {
+                    button.reset();
                     setState( button.getState() );
                     
                 }
@@ -438,6 +461,20 @@ public class MainGame extends Application {
                 root.getChildren().add(startButton.getInnerShape());   
                 root.getChildren().add(startButton.getText());   
                 areaButtons.add(startButton);
+                //Deleting objects
+                root.getChildren().remove(endScoreText);
+        }
+        //Entering END state
+        if( x == gameState.end ) {
+            endScoreText.setText("YOUR SCORE\n" + score);
+            root.getChildren().add(endScoreText);
+            endTimer = 3; //END TIMER TIME
+            //Removing UI
+            root.getChildren().remove(scoreText);
+            root.getChildren().remove(durationText);
+            for (Meteor meteor : new ArrayList<>(meteors)) {
+                root.getChildren().remove(meteor.getShape());
+            }
         }
 
 
@@ -448,8 +485,10 @@ public class MainGame extends Application {
             score = 0;
             gameTime = 0;
             logger.newLog(); //Starts up new logs
-            logger.logEntry("-1", "Logger is currently incomplete.  Delete this file if you see this line.");
             logger.logEntry("-1", "Resolution " + Double.toString(stage.getWidth()) + " " + Double.toString(stage.getHeight()));
+            //Adding UI
+            root.getChildren().add(scoreText);
+            root.getChildren().add(durationText);
         }
         this.state = x;
     }

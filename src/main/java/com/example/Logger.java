@@ -31,7 +31,9 @@ public class Logger {
     public void newLog() {
         close();
         log = true;
-        logFile = new File("log" + System.currentTimeMillis() + ".txt");
+        new File("./log").mkdirs();
+        logFile = new File("log/log" + System.currentTimeMillis() + ".txt");
+
     }
 
     /**

@@ -88,6 +88,13 @@ public class AreaButton { //TODO: BUG: AreaButton doesnt actually get removed fr
         changeInnerSize( timer_complete );
     }
     
+
+    /**
+     * Resets the timer
+     */
+    public void reset() {
+        timer = 0;
+    }
     /**
      * Changes the size of the inner shape
      * @return

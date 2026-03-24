@@ -4,5 +4,5 @@ com/example/Paddle.class
 com/example/MainGame$gameState.class
 com/example/MainGame$1.class
 com/example/Meteor.class
-com/example/Logger.class
 com/example/HandServer.class
+com/example/Logger.class
