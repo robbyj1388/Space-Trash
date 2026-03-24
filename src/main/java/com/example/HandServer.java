@@ -89,7 +89,7 @@ public class HandServer {
     public void openServerProgram() {
         try {
             System.out.println("Attempting start of Python program");
-            Process p = Runtime.getRuntime().exec(new String[]{"python3 hand_tracking.py"});
+            Process p = Runtime.getRuntime().exec(new String[]{"python3.10 hand_tracking.py"});
 
 
             BufferedReader stdInput = new BufferedReader( new InputStreamReader(p.getInputStream()));
@@ -101,7 +101,8 @@ public class HandServer {
 
 
         } catch (IOException e) {
-            System.out.println("Error: Could not automatically run hand_tracking, ensure correct Python version is installed (python10?)!");
+            System.out.println("Error: Could not automatically run hand_tracking, ensure correct Python version is installed (python3.10?)!");
+            System.out.println(e);
             //TODO: Ensure that is right
             //e.printStackTrace();
         }

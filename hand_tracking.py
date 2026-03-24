@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import socket
 import json
+import time
 
 # Initialize Mediapipe Hands
 mp_hands = mp.solutions.hands
@@ -15,8 +16,16 @@ hands = mp_hands.Hands(
 cap = cv2.VideoCapture(0)
 
 # Create socket and connect to Java server
-sock = socket.socket()
-sock.connect(('localhost', 5555))
+connected = False
+while(not connected):
+    try:
+        sock = socket.socket()
+        sock.connect(('localhost', 5555))
+        connected = True
+    except:
+        print("Waiting for open socket 5555")
+        time.sleep(1)
+
 
 try:
     frame_count = 0
