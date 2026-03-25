@@ -89,7 +89,7 @@ public class HandServer {
     public void openServerProgram() {
         try {
             System.out.println("Attempting start of Python program");
-            Process p = Runtime.getRuntime().exec(new String[]{"python3.10 hand_tracking.py"});
+            /*Process p = Runtime.getRuntime().exec(new String[]{"python3.10 hand_tracking.py"});
 
 
             BufferedReader stdInput = new BufferedReader( new InputStreamReader(p.getInputStream()));
@@ -97,12 +97,21 @@ public class HandServer {
             String s = null;
             while((s =stdInput.readLine()) != null) {
                 System.out.println(s);
-            }
+            }*/
+           //Process debug = new ProcessBuilder("ls").start();
+           //Process setup = new ProcessBuilder("source ./.venv/bin/activate").start();
+
+
+            //This is just testing, this isnt done yet, pushing to work on desktop -Noah
+
+           System.out.println(System.getProperty("user.dir"));
+           Process proc = new ProcessBuilder("./.venv/bin/python3.10", "hand_tracking.py").start();
 
 
         } catch (IOException e) {
-            System.out.println("Error: Could not automatically run hand_tracking, ensure correct Python version is installed (python3.10?)!");
             System.out.println(e);
+            System.out.println("Error: Could not automatically run hand_tracking, please setup .venv");
+            
             //TODO: Ensure that is right
             //e.printStackTrace();
         }
