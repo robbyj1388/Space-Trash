@@ -11,11 +11,15 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -60,6 +64,9 @@ public class MainGame extends Application {
 
     private AreaButton startButton; // The start button
     
+    public double starSpeed = .0;
+    private List<Circle> starArray = new ArrayList<>();
+
     public Logger logger = new Logger();
 
     public int meteorsIDs = 0; // The last meteor made 
@@ -72,6 +79,7 @@ public class MainGame extends Application {
     private Stage stage;
 
 
+    
 
     /**
      * Starts the JavaFX application and initializes all game elements.
@@ -154,6 +162,20 @@ public class MainGame extends Application {
         scene.setOnKeyPressed(event -> pressedKeys.add(event.getCode()));
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
+        // Creating stars
+        
+        for(int i = 0; i < 500; i++) {
+            double x = scene.widthProperty().subtract(random.nextInt(scene.widthProperty().intValue())).doubleValue();
+            double y = scene.heightProperty().subtract(random.nextInt(scene.heightProperty().intValue())).doubleValue();
+            Circle star = new Circle(x, y, random.nextInt(2));
+
+            //star.layoutXProperty().bind(scene.widthProperty().subtract(random.nextInt(scene.widthProperty().intValue())));
+            //star.layoutYProperty().bind(scene.heightProperty().subtract(random.nextInt(scene.heightProperty().intValue())));
+            star.setFill(Color.WHITE);
+            root.getChildren().add(star);
+            starArray.add(star);
+        }
+
         // Game loop using AnimationTimer
         AnimationTimer gameLoop = new AnimationTimer() {
             private long lastTime = 0;
@@ -176,6 +198,7 @@ public class MainGame extends Application {
                         if(interTimer <= 0) {
                             setState(gameState.game);
                         }
+                        starSpeed = lerp(starSpeed, 1, 0.05);
                     break;
                     case end:
                         endTimer -= 1*deltaTime;
@@ -185,6 +208,8 @@ public class MainGame extends Application {
                     break;
                     case game:
                         gameDuration -= 1*deltaTime;
+                        starSpeed = lerp(starSpeed, 20, 0.05);
+                        //System.out.println(starSpeed);
                         durationText.setText("TIME LEFT: " + (int)gameDuration);
                         if(gameDuration <= 0) {
                             setState(gameState.end);
@@ -203,6 +228,8 @@ public class MainGame extends Application {
                 if (pressedKeys.contains(KeyCode.LEFT)) rightPaddle.moveLeft();
                 if (pressedKeys.contains(KeyCode.RIGHT)) rightPaddle.moveRight(scene.getWidth());
                 windowResizeUI();
+                checkStars();
+                
             }
         };
         gameLoop.start();
@@ -414,6 +441,12 @@ public class MainGame extends Application {
         }
     }
 
+    private void checkStars() {
+        for(Shape star : new ArrayList<>(starArray)) {
+            //star.layoutYProperty().add(starSpeed);
+            //star.layoutYProperty().set(star.layoutYProperty().doubleValue() % root.getHeight());
+        }
+    }
 
     /**
      * Gets the game state
@@ -491,6 +524,16 @@ public class MainGame extends Application {
             root.getChildren().add(durationText);
         }
         this.state = x;
+    }
+    /**
+     * Linear interpolation
+     * @param start
+     * @param end
+     * @param percentage
+     * @return a->b by f%
+     */
+    public double lerp(double a, double b, double f) {
+        return a * (1.0 - f) + (b * f);
     }
 
     /**
