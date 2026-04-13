@@ -20,4 +20,4 @@ A videogame where meteors fall from the sky, and the player must deflect them to
 * Clean up sizing of everything :/.
 * Finish objective ex. "Don't hit triangles" 
 * Sound Effects: Add sounds for meteor deflections, explosions, and other game events.
-* Polish: Make end screen better (wait till last meteors off screen), and add better graphics (stars?)
+* Polish

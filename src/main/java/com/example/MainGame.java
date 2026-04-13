@@ -40,6 +40,7 @@ public class MainGame extends Application {
     private Paddle rightPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
     private int distanceBetweenPaddles = 300; // Distance between paddles on spawn
     private List<Meteor> meteors = new ArrayList<>(); // List of active meteors
+    private boolean spawnMeteors = false;
     private Set<KeyCode> pressedKeys = new HashSet<>(); // Tracks keys currently pressed
 
     private List<AreaButton> areaButtons = new ArrayList<>(); // List of active buttons
@@ -211,9 +212,7 @@ public class MainGame extends Application {
                     break;
                     case game:
                         gameDuration -= 1*deltaTime;
-                        starSpeed = lerp(starSpeed, 20, 0.05);
-                        //System.out.println(starSpeed);
-                        durationText.setText("TIME LEFT: " + (int)gameDuration);
+                        durationText.setText("TIME LEFT: " + (int)Math.clamp(gameDuration, 0, gameLength));
                         if(gameDuration <= 0) {
                             setState(gameState.end);
                         }       
@@ -231,7 +230,6 @@ public class MainGame extends Application {
                 if (pressedKeys.contains(KeyCode.LEFT)) rightPaddle.moveLeft();
                 if (pressedKeys.contains(KeyCode.RIGHT)) rightPaddle.moveRight(scene.getWidth());
                 windowResizeUI();
-                checkStars();
                 
             }
         };
@@ -352,7 +350,8 @@ public class MainGame extends Application {
      * @param sceneWidth the width of the scene to constrain meteor spawn
      */
     private void spawnMeteor(double sceneWidth) {
-        if(!state.equals(gameState.game))
+        
+        if(!spawnMeteors)
         {
             return;
         }
@@ -424,6 +423,13 @@ public class MainGame extends Application {
                     scoreText.setText("Score: " + score);
                 }
             }
+            //Check if outside of game range to delete from meteor list
+            if(meteor.getY() > root.getHeight()+5) {
+                meteors.remove(meteor);
+            }
+            if((meteor.getCollided()) && (meteor.getY() < 0)) {
+                meteors.remove(meteor);
+            }
         }
         for(AreaButton button : new ArrayList<>(areaButtons)) //Area buttons
         {
@@ -444,11 +450,7 @@ public class MainGame extends Application {
         }
     }
 
-    private void checkStars() {
-        for(Shape star : new ArrayList<>(starArray)) {
-            //star.setLayoutY(star.getLayoutY() + starSpeed);
-        }
-    }
+
 
     /**
      * Gets the game state
@@ -464,11 +466,11 @@ public class MainGame extends Application {
      */
     public void setState(gameState x)
     {
-        
+        boolean comp = true; //If we are completing the state transition (There is a better way to handle this)
         //Removing elements
         if(x != gameState.menu) //menu elements
         {
-            if(root.getChildren().contains(titleText)) {
+            if(root.getChildren().contains(titleText)) { //Removing all menu elements if title exist
                 root.getChildren().remove(titleText);
                 root.getChildren().remove(startButton.getShape()); 
                 root.getChildren().remove(startButton.getInnerShape());   
@@ -501,14 +503,19 @@ public class MainGame extends Application {
         }
         //Entering END state
         if( x == gameState.end ) {
-            endScoreText.setText("YOUR SCORE\n" + score);
-            root.getChildren().add(endScoreText);
-            endTimer = 3; //END TIMER TIME
-            //Removing UI
-            root.getChildren().remove(scoreText);
-            root.getChildren().remove(durationText);
-            for (Meteor meteor : new ArrayList<>(meteors)) {
-                root.getChildren().remove(meteor.getShape());
+            spawnMeteors = false; 
+            comp = false;
+            if(meteors.size() == 0) { //setState(gameState.end) will repeatably run each game frame until there are no meteors left
+                comp = true;
+                endScoreText.setText("YOUR SCORE\n" + score);
+                root.getChildren().add(endScoreText);
+                endTimer = 3; //END TIMER TIME
+                //Removing UI
+                root.getChildren().remove(scoreText);
+                root.getChildren().remove(durationText);
+                for (Meteor meteor : new ArrayList<>(meteors)) {
+                    root.getChildren().remove(meteor.getShape());
+                }
             }
         }
 
@@ -516,16 +523,21 @@ public class MainGame extends Application {
         //Entering GAME state
         if( (x == gameState.game) && (getState() != x)) {
             meteorsIDs = 0;
+            spawnMeteors = true;
             gameDuration = gameLength; 
             score = 0;
             gameTime = 0;
             logger.newLog(); //Starts up new logs
             logger.logEntry("-1", "Resolution " + Double.toString(stage.getWidth()) + " " + Double.toString(stage.getHeight()));
             //Adding UI
-            root.getChildren().add(scoreText);
-            root.getChildren().add(durationText);
+            if(!root.getChildren().contains(scoreText)) { //Edge case just in case
+                root.getChildren().add(scoreText);
+                root.getChildren().add(durationText);
+            }
         }
-        this.state = x;
+        if(comp) {
+            this.state = x;
+        }
     }
     /**
      * Linear interpolation

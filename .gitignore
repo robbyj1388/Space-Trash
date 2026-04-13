@@ -24,3 +24,4 @@ replay_pid*
 venv/
 .venv/
 /log
+*.kate-swp
