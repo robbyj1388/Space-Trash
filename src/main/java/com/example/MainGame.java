@@ -33,6 +33,7 @@ import javafx.util.Duration;
  */
 public class MainGame extends Application {
     private HandServer server = new HandServer(5555); // Server for hand tracking
+    private final boolean disableHands = false; //Disables hand tracking #TODO Push this to an arg
     private Pane root; // Root pane for the scene
     private Random random = new Random();
     private Paddle leftPaddle = new Paddle(10, 10, 50, 10, Color.WHITE);
@@ -70,6 +71,7 @@ public class MainGame extends Application {
     public Logger logger = new Logger();
 
     public int meteorsIDs = 0; // The last meteor made 
+    
 
     enum gameState {
         menu, game, end, intermission
@@ -88,9 +90,9 @@ public class MainGame extends Application {
     @Override
     public void start(Stage stage) {
         
-        
-        server.start(); // Start the hand tracking server
-
+        if(!disableHands) {
+            server.start(); // Start the hand tracking server
+        }
         root = new Pane();
         Scene scene = new Scene(root, 960, 540, Color.BLACK);
         
@@ -128,7 +130,8 @@ public class MainGame extends Application {
 
 
         // Intermission text
-        interText = new Text("HIT THESE\n(objects)\n\nAVOID THESE\n(objects)");
+        //TODO: replace these w/ randomly selected shapes and their symbols NOT names
+        interText = new Text("HIT THESE\nCircle, Square\n\nAVOID THESE\nTriangle, Rectangle");
         interText.setFill(Color.WHITE);
         interText.setTextAlignment(TextAlignment.CENTER);
         interText.setFont(Font.font(40));
@@ -443,8 +446,7 @@ public class MainGame extends Application {
 
     private void checkStars() {
         for(Shape star : new ArrayList<>(starArray)) {
-            //star.layoutYProperty().add(starSpeed);
-            //star.layoutYProperty().set(star.layoutYProperty().doubleValue() % root.getHeight());
+            //star.setLayoutY(star.getLayoutY() + starSpeed);
         }
     }
 
@@ -541,6 +543,7 @@ public class MainGame extends Application {
      * @param args command-line arguments
      */
     public static void main(String[] args) {
+        System.out.println(args);
         launch(args);
     }
 }

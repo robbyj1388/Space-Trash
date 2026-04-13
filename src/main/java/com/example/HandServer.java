@@ -60,11 +60,14 @@ public class HandServer {
                         double ry = Double.parseDouble(parts[3]);
 
                         // Update coordinates
-                        
-                        setLeftX(lx);
-                        setLeftY(ly);
-                        setRightX(rx);
-                        setRightY(ry);
+                        if(lx != -1) {
+                            setLeftX(lx);
+                            setLeftY(ly);
+                        }
+                        if(rx != -1) {
+                            setRightX(rx);
+                            setRightY(ry);
+                        }
                     } else {
                         System.err.println("Invalid data (expected 4 parts): " + line);
                     }
@@ -89,31 +92,23 @@ public class HandServer {
     public void openServerProgram() {
         try {
             System.out.println("Attempting start of Python program");
-            /*Process p = Runtime.getRuntime().exec(new String[]{"python3.10 hand_tracking.py"});
-
-
-            BufferedReader stdInput = new BufferedReader( new InputStreamReader(p.getInputStream()));
-
-            String s = null;
-            while((s =stdInput.readLine()) != null) {
-                System.out.println(s);
-            }*/
-           //Process debug = new ProcessBuilder("ls").start();
-           //Process setup = new ProcessBuilder("source ./.venv/bin/activate").start();
-
-
-            //This is just testing, this isnt done yet, pushing to work on desktop -Noah
-
-           System.out.println(System.getProperty("user.dir"));
-           Process proc = new ProcessBuilder("./.venv/bin/python3.10", "hand_tracking.py").start();
+            
+            //This only works on Linux after setting up the virtual environment with python 3.10 and installing the dependencies from the requirements.txt
+            Process proc = new ProcessBuilder("./.venv/bin/python3.10", "hand_tracking.py").start();
+            //Maybe compile the hand_tracking program to a binary 
 
 
         } catch (IOException e) {
             System.out.println(e);
-            System.out.println("Error: Could not automatically run hand_tracking, please setup .venv");
+            System.out.println("Error: Could not automatically run hand_tracking, please setup .venv with Python 3.10");
+            System.out.println("Please install python3.10");
+            System.out.println("Enter the projects directory");
+            System.out.println("Run 'python3.10 -m .venv");
+            System.out.println("Activate the .venv with python3.10");
+            System.out.println("'Run pip install -r ./requirements.txt'");
+            System.out.println("Restart the program");
             
             //TODO: Ensure that is right
-            //e.printStackTrace();
         }
     }
 }

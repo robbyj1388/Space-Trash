@@ -15,6 +15,7 @@ hands = mp_hands.Hands(
 # Open webcam
 cap = cv2.VideoCapture(0)
 
+
 # Create socket and connect to Java server
 connected = False
 while(not connected):
@@ -42,6 +43,7 @@ try:
 
         frame = cv2.flip(frame, 1)
         frame_small = cv2.resize(frame, (320, 240))
+
         rgb = cv2.cvtColor(frame_small, cv2.COLOR_BGR2RGB)
         result = hands.process(rgb)
 
