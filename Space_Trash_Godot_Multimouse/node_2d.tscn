@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://hgdu8gufb51p"]
+
+[ext_resource type="Script" uid="uid://c0lhxs2qpg85p" path="res://scripts/node_2d.gd" id="1_0e48y"]
+[ext_resource type="Script" uid="uid://cs2tbgrxeawpj" path="res://addons/multi_mouse/multi_mouse_manager.gd" id="2_epypp"]
+[ext_resource type="Script" uid="uid://cncdgssvedng7" path="res://scripts/left.gd" id="5_kdubu"]
+[ext_resource type="Script" uid="uid://cxgrewphcbsgw" path="res://scripts/right.gd" id="5_q6r6c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
+size = Vector2(1180, 29.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hol4"]
+size = Vector2(678, 46.000015)
+
+[node name="Node2D" type="Node2D" unique_id=550464631]
+script = ExtResource("1_0e48y")
+
+[node name="MultiMouse" type="Node" parent="." unique_id=1498778651]
+script = ExtResource("2_epypp")
+metadata/_custom_type_script = "uid://cs2tbgrxeawpj"
+
+[node name="Border" type="StaticBody2D" parent="." unique_id=296446115]
+position = Vector2(105, 57)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Border" unique_id=1959735895]
+position = Vector2(467, 606)
+shape = SubResource("RectangleShape2D_q6r6c")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Border" unique_id=47469052]
+position = Vector2(1069, 249)
+rotation = -1.5707963
+shape = SubResource("RectangleShape2D_0hol4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Border" unique_id=38216019]
+position = Vector2(-121, 271)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_0hol4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Border" unique_id=779981079]
+position = Vector2(476, -70)
+shape = SubResource("RectangleShape2D_q6r6c")
+
+[node name="Left" type="Area2D" parent="." unique_id=1519841815]
+collision_layer = 0
+script = ExtResource("5_kdubu")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Left" unique_id=1807732280]
+modulate = Color(0.82754475, 0.36578223, 0.94742614, 1)
+polygon = PackedVector2Array(0, 0, 576, 0, 576, 648, 0, 648)
+
+[node name="Right" type="Area2D" parent="." unique_id=633475990]
+collision_layer = 0
+script = ExtResource("5_q6r6c")
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Right" unique_id=603793978]
+modulate = Color(0.5489592, 0.00021716594, 0.5489554, 1)
+position = Vector2(576, 0)
+polygon = PackedVector2Array(576, 0, 576, 648, 0, 648, 0, 0)
+
+[connection signal="body_entered" from="Left" to="Left" method="_on_body_entered"]
+[connection signal="mouse_entered" from="Left" to="Left" method="_on_mouse_entered"]
+[connection signal="body_entered" from="Right" to="Right" method="_on_body_entered"]
+[connection signal="mouse_entered" from="Right" to="Right" method="_on_mouse_entered"]
