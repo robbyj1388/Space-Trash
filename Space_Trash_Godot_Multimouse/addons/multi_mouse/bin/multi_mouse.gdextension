@@ -1,0 +1,11 @@
+[configuration]
+entry_symbol = "multi_mouse_library_init"
+compatibility_minimum = "4.2"
+
+[libraries]
+windows.debug.x86_64 = "res://addons/multi_mouse/bin/win64/libmulti_mouse.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/multi_mouse/bin/win64/libmulti_mouse.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://addons/multi_mouse/bin/linux/libmulti_mouse.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://addons/multi_mouse/bin/linux/libmulti_mouse.linux.template_release.x86_64.so"
+macos.debug = "res://addons/multi_mouse/bin/macos/libmulti_mouse.macos.template_debug.universal.dylib"
+macos.release = "res://addons/multi_mouse/bin/macos/libmulti_mouse.macos.template_release.universal.dylib"

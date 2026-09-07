@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://doyckpkc7bm42"]
+
+[ext_resource type="Script" uid="uid://cujf7v3vrjnej" path="res://scripts/ball.gd" id="1_d8dhm"]
+[ext_resource type="Script" uid="uid://bvcehvvp717fx" path="res://scripts/area_2d.gd" id="2_h6iok"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_d8dhm"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d8dhm"]
+size = Vector2(57, 47)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h45nl"]
+size = Vector2(66, 55)
+
+[node name="ball" type="RigidBody2D" unique_id=1204564817]
+modulate = Color(1, 0, 0, 1)
+collision_layer = 2
+physics_material_override = SubResource("PhysicsMaterial_d8dhm")
+gravity_scale = 0.0
+lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 4
+script = ExtResource("1_d8dhm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=269198652]
+position = Vector2(2.5, -2.5)
+shape = SubResource("RectangleShape2D_d8dhm")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=317395237]
+position = Vector2(-168, 12)
+polygon = PackedVector2Array(143.5, -37, 198.5, -37, 196.5, 8, 143.5, 8)
+uv = PackedVector2Array(143.5, -37, 198.5, -37, 196.5, 8, 143.5, 8)
+
+[node name="HitDetector" type="Area2D" parent="." unique_id=327786832]
+collision_layer = 0
+script = ExtResource("2_h6iok")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitDetector" unique_id=2005277579]
+position = Vector2(2, -2.5)
+shape = SubResource("RectangleShape2D_h45nl")

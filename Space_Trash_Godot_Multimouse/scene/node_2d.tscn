@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://buf78amcqk8pv"]
+
+[ext_resource type="Script" uid="uid://c0lhxs2qpg85p" path="res://node_2d.gd" id="1_wtcfe"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0e48y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_epypp"]
+
+[node name="Node2D" type="Node2D" unique_id=550464631]
+script = ExtResource("1_wtcfe")
+
+[node name="Player" type="Area2D" parent="." unique_id=297468413]
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=876765994]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1539773546]
+shape = SubResource("CircleShape2D_0e48y")
+
+[node name="Dot" type="Area2D" parent="." unique_id=278276647]
+
+[node name="Sprite2D" type="Sprite2D" parent="Dot" unique_id=164468490]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dot" unique_id=466817045]
+shape = SubResource("CircleShape2D_epypp")
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=1926356488]
+offset_right = 40.0
+offset_bottom = 23.0
